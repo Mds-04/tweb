@@ -18,10 +18,31 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'livello',
+        'nome',
+        'cognome',
         'email',
+        'username',
         'password',
+        'data_nascita',
+        'organizzazione',
+        'telefono',
     ];
+
+    public function eventiOrganizzati()
+    {
+        return $this->hasMany(Event::class, 'organizzatore_id');
+    }
+
+    public function acquisti()
+    {
+        return $this->hasMany(Purchase::class, 'cliente_id');
+    }
+
+    public function partecipazioni()
+    {
+        return $this->belongsToMany(Event::class, 'participations', 'cliente_id', 'evento_id')->withTimestamps();
+    }
 
     /**
      * The attributes that should be hidden for serialization.
