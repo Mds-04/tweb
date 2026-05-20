@@ -96,10 +96,15 @@ class OrganizerController extends Controller
             'luogo' => 'required|string|max:255',
             'come_raggiungere' => 'nullable|string',
             'categoria' => 'required|string|max:255',
-            'immagine' => 'nullable|string|max:255',
+            'immagine' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'prezzo' => 'required|numeric|min:0',
             'biglietti_totali' => 'required|integer|min:1',
         ]);
+
+        $immaginePath = null;
+        if ($request->hasFile('immagine')) {
+            $immaginePath = $request->file('immagine')->store('locandine', 'public');
+        }
 
         Event::create([
             'organizzatore_id' => Auth::id(),
@@ -112,7 +117,7 @@ class OrganizerController extends Controller
             'luogo' => $request->luogo,
             'come_raggiungere' => $request->come_raggiungere,
             'categoria' => $request->categoria,
-            'immagine' => $request->immagine,
+            'immagine' => $immaginePath,
             'prezzo' => $request->prezzo,
             'biglietti_totali' => $request->biglietti_totali,
             'biglietti_disponibili' => $request->biglietti_totali, // Alla creazione i disponibili sono uguali al totale
@@ -136,11 +141,16 @@ class OrganizerController extends Controller
             'luogo' => 'required|string|max:255',
             'come_raggiungere' => 'nullable|string',
             'categoria' => 'required|string|max:255',
-            'immagine' => 'nullable|string|max:255',
+            'immagine' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'prezzo' => 'required|numeric|min:0',
         ]);
 
         $evento = Event::where('organizzatore_id', Auth::id())->findOrFail($id);
+
+        $immaginePath = $evento->immagine;
+        if ($request->hasFile('immagine')) {
+            $immaginePath = $request->file('immagine')->store('locandine', 'public');
+        }
 
         $evento->update([
             'titolo' => $request->titolo,
@@ -152,7 +162,7 @@ class OrganizerController extends Controller
             'luogo' => $request->luogo,
             'come_raggiungere' => $request->come_raggiungere,
             'categoria' => $request->categoria,
-            'immagine' => $request->immagine,
+            'immagine' => $immaginePath,
             'prezzo' => $request->prezzo,
         ]);
 
