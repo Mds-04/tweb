@@ -12,70 +12,38 @@
 
     @include('partials.header')
 
-    <section class="motto-section">
-        <div class="logo-container" style="flex-direction: column; gap: 20px;">
+            <section class="motto-section">
+        <div class="logo-container" style="flex-direction: column; gap: 20px; width: 100%; max-width: 600px; margin: 0 auto;">
             <span id="event-name">Mostre</span>
 
-            <div class="search-bar">
-                <input type="text" placeholder="Ricerca evento">
-                <i class="fa-solid fa-search"></i>
-            </div>
-
-            <div class="combo-box-container">
+            <form action="" method="GET" style="display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; width: 100%;">
                 
-                <div class="custom-dropdown" id="dd-categoria">
-                    <button class="dropdown-toggle btn btn-gray" type="button">
-                        <i class="fa fa-ticket"></i>
-                        <div class="dd-text">
-                            <strong>Categoria:</strong> <span class="dd-selected">Mostre</span>
-                        </div>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <div class="dd-item">Eventi musicali</div>
-                        <div class="dd-item">Eventi teatrali</div>
-                        <div class="dd-item">Manifestazioni letterarie</div>
-                        <div class="dd-item">Mostre</div>
-                        <div class="dd-item">Convegni</div>
-                    </div>
+                <div class="search-bar" style="margin: 0; width: 100%;">
+                    <input type="text" placeholder="Ricerca Mostra" name="search" value="{{ request('search') }}" style="width: 100%; box-sizing: border-box;">
+                    <button type="submit" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; outline: none; z-index: 10;"><i class="fa-solid fa-search"></i></button>
                 </div>
 
-                <div class="custom-dropdown" id="dd-luogo">
-                    <button class="dropdown-toggle btn btn-gray" type="button">
-                        <i class="fa fa-map-marker"></i>
-                        <div class="dd-text">
-                            <strong>Luogo:</strong> <span class="dd-selected">Tutta Italia</span>
+                <div class="custom-dropdown" id="dd-luogo" style="width: 100%;">
+                    <button class="dropdown-toggle btn btn-gray" type="button" style="width: 100%; justify-content: space-between;">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fa fa-map-marker"></i>
+                            <div class="dd-text">
+                                <strong>Luogo:</strong> <span class="dd-selected">{{ request('luogo', 'Tutta Italia') }}</span><input type="hidden" name="luogo" id="hidden-luogo" value="{{ request('luogo') }}">
+                            </div>
                         </div>
                         <i class="fas fa-chevron-down arrow"></i>
                     </button>
                     <div class="dropdown-menu">
                         <div class="dd-item">Tutta Italia</div>
-                        <div class="dd-item">Vicino alla mia posizione</div>
                         <div class="dd-input-wrapper">
                             <input type="text" id="input-citta" placeholder="Inserisci una città...">
-                            <button id="btn-conferma-citta" class="btn-submit" style="padding: 8px; border-radius: 6px;"><i class="fa fa-check"></i></button>
+                            <button id="btn-conferma-citta" class="btn-submit" type="button" style="padding: 8px; border-radius: 6px; width: auto;"><i class="fa fa-check"></i></button>
                         </div>
                     </div>
                 </div>
 
-                <div class="custom-dropdown" id="dd-quando">
-                    <button class="dropdown-toggle btn btn-gray" type="button">
-                        <i class="fa fa-calendar"></i>
-                        <div class="dd-text">
-                            <strong>Quando:</strong> <span class="dd-selected">Sempre</span>
-                        </div>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <div class="dd-item">Sempre</div>
-                        <div class="dd-item">Prossima settimana</div>
-                        <div class="dd-item" id="apri-calendario">Seleziona date... <i class="fa-regular fa-calendar-days" style="float:right;"></i></div>
-                    </div>
-                </div>
-
-            </div>
-
-            <button class="btn btn-gray">Cerca</button>
+                <button type="submit" class="btn btn-gray" style="padding: 14px 50px; font-size: 16px;">Cerca</button>
+            </form>
             
             <div class="result-founded">
                 {{ count($eventi) }} risultati trovati
@@ -97,7 +65,7 @@
                     </div>
                 </div>
             @empty
-                <p style="text-align: center; width: 100%; color: white;">Nessun evento disponibile per questa categoria.</p>
+                <p style="text-align: center; width: 100%; color: var(--text-dark);">Nessun evento disponibile per questa categoria.</p>
             @endforelse
         </div>
     </section>

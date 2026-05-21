@@ -41,12 +41,7 @@
                 </div>
             </div>
             
-            <div class="form-options">
-                <label class="ricordami">
-                    <input type="checkbox" name="ricordami"> Ricordami
-                </label>
-                <a href="#" class="link-dimenticata">Password dimenticata?</a>
-            </div>
+
             
             <button type="submit" class="btn-submit">ACCEDI</button>
             <p class="testo-registrati">Non hai un account? <a href="#" id="link-apri-register" class="register">Registrati</a></p>

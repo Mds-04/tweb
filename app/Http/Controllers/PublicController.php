@@ -38,34 +38,63 @@ class PublicController extends Controller
         return view('index', compact('prossimiEventi', 'eventiPerCategoria'));
     }
 
-    public function musicali()
+    public function musicali(Request $request)
     {
-        $eventi = Event::where('categoria', 'Eventi Musicali')->orderBy('data', 'asc')->get();
+        $eventi = $this->filterEvents('Eventi Musicali', $request);
         return view('events.eventiMusicali', compact('eventi'));
     }
 
-    public function teatrali()
+    public function teatrali(Request $request)
     {
-        $eventi = Event::where('categoria', 'Eventi Teatrali')->orderBy('data', 'asc')->get();
+        $eventi = $this->filterEvents('Eventi Teatrali', $request);
         return view('events.eventiTeatrali', compact('eventi'));
     }
 
-    public function letterarie()
+    public function letterarie(Request $request)
     {
-        $eventi = Event::where('categoria', 'Manifestazioni Letterarie')->orderBy('data', 'asc')->get();
+        $eventi = $this->filterEvents('Manifestazioni Letterarie', $request);
         return view('events.manifestazioniLetterarie', compact('eventi'));
     }
 
-    public function mostre()
+    public function mostre(Request $request)
     {
-        $eventi = Event::where('categoria', 'Mostre')->orderBy('data', 'asc')->get();
+        $eventi = $this->filterEvents('Mostre', $request);
         return view('events.mostre', compact('eventi'));
     }
 
-    public function convegni()
+    public function convegni(Request $request)
     {
-        $eventi = Event::where('categoria', 'Convegni')->orderBy('data', 'asc')->get();
+        $eventi = $this->filterEvents('Convegni', $request);
         return view('events.convegni', compact('eventi'));
+    }
+
+    private function filterEvents($categoria, Request $request)
+    {
+        $query = Event::where('categoria', $categoria);
+        if ($request->filled('search')) {
+            $query->where('titolo', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('luogo') && $request->luogo !== 'Tutta Italia') {
+            $query->where(function($q) use ($request) {
+                $q->where('citta', 'like', '%' . $request->luogo . '%')
+                  ->orWhere('luogo', 'like', '%' . $request->luogo . '%');
+            });
+        }
+        return $query->orderBy('data', 'asc')->get();
+    }
+
+    public function search(Request $request)
+    {
+        $query = Event::query();
+        if ($request->filled('q')) {
+            $query->where('titolo', 'like', '%' . $request->q . '%')
+                  ->orWhere('descrizione', 'like', '%' . $request->q . '%');
+        }
+        $eventi = $query->orderBy('data', 'asc')->get();
+        // Possiamo riusare una vista di categoria per mostrare i risultati, 
+        // per semplicità riusiamo eventiMusicali passando i risultati e nascondendo i dropdown non voluti
+        // o meglio creiamo una nuova view search_results
+        return view('search_results', compact('eventi'));
     }
 
     public function show($id)

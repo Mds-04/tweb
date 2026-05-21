@@ -4,10 +4,14 @@
         <a href="{{ url('/') }}" class="redirectLink"> EventTicket</a>
     </div>
     
-    <div class="search-bar">
-        <input type="text" placeholder="Ricerca evento con parole chiave">
-        <i class="fa-solid fa-search"></i>
-    </div>
+    <form action="{{ route('search') }}" method="GET" style="display: contents;">
+        <div class="search-bar">
+            <input type="text" name="q" value="{{ request('q') }}" placeholder="Ricerca evento con parole chiave">
+            <button type="submit" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; outline: none;">
+                <i class="fa-solid fa-search" style="color: #888; font-size: 16px;"></i>
+            </button>
+        </div>
+    </form>
 
     <div class="top-nav-buttons">
         @guest

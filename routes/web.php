@@ -14,6 +14,7 @@ Route::get('/eventi/teatrali', [\App\Http\Controllers\PublicController::class, '
 Route::get('/eventi/letterarie', [\App\Http\Controllers\PublicController::class, 'letterarie'])->name('eventi.letterarie');
 Route::get('/eventi/mostre', [\App\Http\Controllers\PublicController::class, 'mostre'])->name('eventi.mostre');
 Route::get('/eventi/convegni', [\App\Http\Controllers\PublicController::class, 'convegni'])->name('eventi.convegni');
+Route::get('/search', [\App\Http\Controllers\PublicController::class, 'search'])->name('search');
 
 Route::get('/evento/{id}', [\App\Http\Controllers\PublicController::class, 'show'])->name('evento.show');
 

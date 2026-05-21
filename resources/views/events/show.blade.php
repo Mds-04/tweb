@@ -67,6 +67,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .price {
@@ -80,7 +82,9 @@
         }
         .buy-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .btn-partecipero {
             background-color: white;
@@ -160,8 +164,24 @@
             </div>
 
             <div class="buy-box">
+                @php
+                    $prezzo_finale = $evento->prezzo;
+                    $sconto_applicato = false;
+                    if ($evento->sconto_giorni > 0 && $evento->sconto_percentuale > 0) {
+                        $giorni_mancanti = \Carbon\Carbon::today()->diffInDays(\Carbon\Carbon::parse($evento->data), false);
+                        if ($giorni_mancanti >= 0 && $giorni_mancanti <= $evento->sconto_giorni) {
+                            $prezzo_finale = $evento->prezzo * (1 - ($evento->sconto_percentuale / 100));
+                            $sconto_applicato = true;
+                        }
+                    }
+                @endphp
                 <div>
-                    <div class="price">€ {{ number_format($evento->prezzo, 2, ',', '.') }}</div>
+                    <div class="price">
+                        @if($sconto_applicato)
+                            <span style="text-decoration: line-through; color: #888; font-size: 22px; margin-right: 10px;">€ {{ number_format($evento->prezzo, 2, ',', '.') }}</span>
+                        @endif
+                        € {{ number_format($prezzo_finale, 2, ',', '.') }}
+                    </div>
                     <div class="availability">Disponibilità: <strong>{{ $evento->biglietti_disponibili }}</strong> biglietti</div>
                 </div>
                 <div class="buy-buttons">
@@ -181,8 +201,8 @@
                             </form>
                         @endif
                     @else
-                        <button class="btn-partecipero" onclick="document.getElementById('modal-login').classList.add('active')">
-                            Parteciperò
+                        <button class="btn-partecipero btn-apri-login" style="padding: 15px 30px; font-size: 16px;" title="Devi effettuare l'accesso per partecipare">
+                            Accedi per Partecipare
                         </button>
                     @endauth
                     @auth
@@ -190,10 +210,10 @@
                             <form action="{{ route('cart.add', $evento->id) }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
                                 @csrf
                                 <div style="display: flex; flex-direction: column;">
-                                    <label for="quantity" style="font-size: 12px; color: #666; margin-bottom: 2px;">Quantità:</label>
+                                    <label for="quantity" style="font-size: 13px; color: #666; margin-bottom: 4px;">Quantità:</label>
                                     <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $evento->biglietti_disponibili }}" style="width: 70px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; text-align: center;">
                                 </div>
-                                <button type="submit" class="btn loginBtn" style="padding: 15px 30px; font-size: 16px; border: none; cursor: pointer; height: 100%; margin-top: 18px;">
+                                <button type="submit" class="btn loginBtn" style="padding: 15px 30px; font-size: 16px; border: none; cursor: pointer; height: 50px; display: flex; align-items: center; align-self: flex-end;">
                                     <i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Aggiungi
                                 </button>
                             </form>

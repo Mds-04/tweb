@@ -23,6 +23,9 @@ html {
 body {
     background-color: var(--bg-light);
     color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* --- PRIMA NAVBAR (Top Nav) --- */
@@ -78,6 +81,10 @@ body {
     top: 50%;
     transform: translateY(-50%);
     color: #888;
+}
+.search-bar button i {
+    position: static;
+    transform: none;
 }
 
 .top-nav-buttons {
@@ -299,6 +306,7 @@ footer {
     background-color: var(--footer-bg);
     padding: 40px 5% 20px;
     border-top: 1px solid #ddd;
+    margin-top: auto;
 }
 
 .footer-row {
