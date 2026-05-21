@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventTicket - {{ $evento['titolo'] }}</title>
+    <title>EventTicket - {{ $evento->titolo }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('img/noBgLogo.png') }}" type="image/x-icon">
@@ -30,6 +30,7 @@
             font-size: 80px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             flex-shrink: 0;
+            overflow: hidden;
         }
         .event-header-info h1 {
             font-size: 48px;
@@ -142,24 +143,26 @@
     @include('partials.header')
 
     <div class="event-hero">
-        <div class="event-poster">
-            <i class="fa-solid fa-music"></i>
+        <div class="event-poster" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;" @endif>
+            @if(!$evento->immagine)
+                <i class="fa-solid fa-music"></i>
+            @endif
         </div>
         <div class="event-header-info">
-            <span class="badge">{{ $evento['categoria'] }}</span>
-            <h1>{{ $evento['titolo'] }}</h1>
+            <span class="badge">{{ $evento->categoria }}</span>
+            <h1>{{ $evento->titolo }}</h1>
             
             <div class="event-meta">
-                <div><i class="fa-regular fa-calendar"></i> {{ $evento['data'] }}</div>
-                <div><i class="fa-regular fa-clock"></i> {{ $evento['orario'] }}</div>
-                <div><i class="fa-solid fa-location-dot"></i> {{ $evento['citta'] }}</div>
-                <div><i class="fa-solid fa-building"></i> {{ $evento['luogo'] }}</div>
+                <div><i class="fa-regular fa-calendar"></i> {{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</div>
+                <div><i class="fa-regular fa-clock"></i> {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+                <div><i class="fa-solid fa-location-dot"></i> {{ $evento->citta }}</div>
+                <div><i class="fa-solid fa-building"></i> {{ $evento->luogo }}</div>
             </div>
 
             <div class="buy-box">
                 <div>
-                    <div class="price">€ {{ number_format($evento['prezzo'], 2, ',', '.') }}</div>
-                    <div class="availability">Disponibilità: <strong>{{ $evento['biglietti_disponibili'] }}</strong> biglietti</div>
+                    <div class="price">€ {{ number_format($evento->prezzo, 2, ',', '.') }}</div>
+                    <div class="availability">Disponibilità: <strong>{{ $evento->biglietti_disponibili }}</strong> biglietti</div>
                 </div>
                 <div class="buy-buttons">
                     <button class="btn-partecipero" onclick="togglePartecipazione(this)">
@@ -167,7 +170,7 @@
                     </button>
                     @auth
                         @if(Auth::user()->livello == 2)
-                            <form action="{{ route('cart.add', $evento['id']) }}" method="POST">
+                            <form action="{{ route('cart.add', $evento->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn loginBtn" style="padding: 15px 40px; font-size: 18px; border: none; cursor: pointer;">
                                     <i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Aggiungi al Carrello
@@ -186,18 +189,19 @@
     <div class="event-details-section">
         <div class="detail-card">
             <h2><i class="fa-solid fa-align-left"></i> Descrizione</h2>
-            <p>{{ $evento['descrizione'] }}</p>
+            <p>{{ $evento->descrizione }}</p>
+            <p style="margin-top: 15px; font-size: 14px; color: #888;"><strong>Organizzato da:</strong> {{ $evento->organizzatore->organizzazione ?? ($evento->organizzatore->nome . ' ' . $evento->organizzatore->cognome) }}</p>
         </div>
 
         <div class="detail-card">
             <h2><i class="fa-solid fa-list"></i> Programma</h2>
-            <p>{!! nl2br(e($evento['programma'])) !!}</p>
+            <p>{!! nl2br(e($evento->programma)) !!}</p>
         </div>
 
         <div class="detail-card">
             <h2><i class="fa-solid fa-map-location-dot"></i> Come Raggiungerci</h2>
-            <p><strong>{{ $evento['luogo'] }} - {{ $evento['citta'] }}</strong></p>
-            <p>{{ $evento['indicazioni'] }}</p>
+            <p><strong>{{ $evento->luogo }} - {{ $evento->citta }}</strong></p>
+            <p>{{ $evento->come_raggiungere }}</p>
         </div>
     </div>
 

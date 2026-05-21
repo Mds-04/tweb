@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                 <div class="form-group" style="flex: 1;">
                     <label for="reg-data-nascita">Data di Nascita</label>
                     <div class="input-wrapper">
@@ -83,24 +83,12 @@
                 </div>
                 
                 <div class="form-group" style="flex: 1;">
-                    <label for="reg-tipo">Tipo Account</label>
+                    <label for="reg-password">Password</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-users icon"></i>
-                        <select id="reg-tipo" name="ruolo" required style="width: 100%; padding: 10px 35px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; outline: none; appearance: none; background: white; cursor: pointer;">
-                            <option value="cliente" selected>Cliente</option>
-                            <option value="organizzatore">Organizzatore</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down" style="position: absolute; right: 10px; color: #888; pointer-events: none;"></i>
+                        <i class="fa-solid fa-lock icon"></i>
+                        <input type="password" id="reg-password" name="password" placeholder="Scegli password" required style="padding-top: 10px; padding-bottom: 10px;">
+                        <i class="fa-solid fa-eye-slash icon-toggle" id="toggle-reg-password"></i>
                     </div>
-                </div>
-            </div>
-            
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label for="reg-password">Password</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock icon"></i>
-                    <input type="password" id="reg-password" name="password" placeholder="Scegli password" required style="padding-top: 10px; padding-bottom: 10px;">
-                    <i class="fa-solid fa-eye-slash icon-toggle" id="toggle-reg-password"></i>
                 </div>
             </div>
             

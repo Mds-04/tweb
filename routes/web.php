@@ -2,82 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Rotta per la Homepage
-Route::get('/', function () {
-    if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->livello === 3) {
-        return redirect()->route('organizer.dashboard');
-    }
-    return view('index');
-})->name('home');
+// Rotte Pubbliche gestite dal PublicController
+Route::get('/', [\App\Http\Controllers\PublicController::class, 'home'])->name('home');
 
-// Rotta per la pagina Chi Siamo (About)
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-// Rotta per gli Eventi Musicali
-Route::get('/eventi/musicali', function () {
-    return view('events.eventiMusicali');
-})->name('eventi.musicali');
+Route::get('/eventi/musicali', [\App\Http\Controllers\PublicController::class, 'musicali'])->name('eventi.musicali');
+Route::get('/eventi/teatrali', [\App\Http\Controllers\PublicController::class, 'teatrali'])->name('eventi.teatrali');
+Route::get('/eventi/letterarie', [\App\Http\Controllers\PublicController::class, 'letterarie'])->name('eventi.letterarie');
+Route::get('/eventi/mostre', [\App\Http\Controllers\PublicController::class, 'mostre'])->name('eventi.mostre');
+Route::get('/eventi/convegni', [\App\Http\Controllers\PublicController::class, 'convegni'])->name('eventi.convegni');
 
-// Rotta per gli Eventi Teatrali
-Route::get('/eventi/teatrali', function () {
-    return view('events.eventiTeatrali');
-})->name('eventi.teatrali');
-
-// Rotta per le Manifestazioni Letterarie
-Route::get('/eventi/letterarie', function () {
-    return view('events.manifestazioniLetterarie');
-})->name('eventi.letterarie');
-
-// Rotta per le Mostre
-Route::get('/eventi/mostre', function () {
-    return view('events.mostre');
-})->name('eventi.mostre');
-
-// Rotta per i Convegni
-Route::get('/eventi/convegni', function () {
-    return view('events.convegni');
-})->name('eventi.convegni');
-
-// Rotta parametrica per il Singolo Evento (Dinamica)
-Route::get('/evento/{id}', function ($id) {
-    // Array simulato per mostrare dati dinamici in base all'ID
-    $eventiFittizi = [
-        1 => [
-            'titolo' => 'Concerto di Primavera',
-            'categoria' => 'Eventi Musicali',
-            'data' => '15 Maggio 2026',
-            'orario' => '21:00',
-            'citta' => 'Milano',
-            'luogo' => 'Teatro alla Scala',
-            'prezzo' => 45.00,
-            'biglietti_disponibili' => 120,
-            'descrizione' => "Unisciti a noi per una serata indimenticabile di musica classica. L'orchestra sinfonica eseguirà i brani più celebri della primavera.",
-            'programma' => "20:30 - Apertura porte\n21:00 - Inizio concerto\n22:15 - Intervallo\n22:30 - Seconda parte\n23:30 - Chiusura",
-            'indicazioni' => "Il Teatro alla Scala si trova nel centro di Milano, facilmente raggiungibile con la metropolitana Linea 1 (fermata Duomo) o Linea 3 (fermata Montenapoleone)."
-        ],
-        // Dati di fallback per altri ID
-        'default' => [
-            'titolo' => 'Evento Spettacolare',
-            'categoria' => 'Eventi Vari',
-            'data' => 'Data da definire',
-            'orario' => '20:00',
-            'citta' => 'Roma',
-            'luogo' => 'PalaLottomatica',
-            'prezzo' => 25.50,
-            'biglietti_disponibili' => 500,
-            'descrizione' => "Non perdere l'evento dell'anno! Una serie di attività entusiasmanti ti aspettano. Acquista ora il tuo biglietto.",
-            'programma' => "19:00 - Accoglienza\n20:00 - Inizio show\n23:00 - Saluti finali",
-            'indicazioni' => "Raggiungibile in auto con ampio parcheggio esterno, oppure tramite i mezzi pubblici di superficie."
-        ]
-    ];
-
-    $evento = $eventiFittizi[$id] ?? $eventiFittizi['default'];
-    $evento['id'] = $id;
-
-    return view('events.show', compact('evento'));
-})->name('evento.show');
+Route::get('/evento/{id}', [\App\Http\Controllers\PublicController::class, 'show'])->name('evento.show');
 
 // Rotte per l'Autenticazione
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register.post');

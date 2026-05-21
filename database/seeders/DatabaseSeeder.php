@@ -65,5 +65,65 @@ class DatabaseSeeder extends Seeder
             'biglietti_totali' => 10000,
             'biglietti_disponibili' => 10000,
         ]);
+
+        // Inizializza Faker
+        $faker = \Faker\Factory::create('it_IT');
+
+        // 5. Creazione 10 Clienti casuali
+        for ($i = 0; $i < 10; $i++) {
+            User::create([
+                'nome' => $faker->firstName,
+                'cognome' => $faker->lastName,
+                'email' => $faker->unique()->safeEmail,
+                'username' => 'cliente_' . $faker->unique()->userName,
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'livello' => 2,
+                'telefono' => $faker->phoneNumber,
+                'data_nascita' => $faker->date('Y-m-d', '2005-01-01'),
+            ]);
+        }
+
+        // 6. Creazione 10 Organizzazioni casuali
+        $organizerIds = [$organizer->id]; // includiamo anche l'organizzatore principale
+        for ($i = 0; $i < 10; $i++) {
+            $org = User::create([
+                'nome' => $faker->firstName,
+                'cognome' => $faker->lastName,
+                'email' => $faker->unique()->companyEmail,
+                'username' => 'org_' . $faker->unique()->userName,
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'livello' => 3,
+                'organizzazione' => $faker->company,
+                'telefono' => $faker->phoneNumber,
+                'data_nascita' => $faker->date('Y-m-d', '1990-01-01'),
+            ]);
+            $organizerIds[] = $org->id;
+        }
+
+        // 7. Creazione 10 Eventi per ciascuna Categoria (50 in totale)
+        $categorie = ['Eventi Musicali', 'Eventi Teatrali', 'Manifestazioni Letterarie', 'Mostre', 'Convegni'];
+
+        foreach ($categorie as $categoria) {
+            for ($i = 0; $i < 10; $i++) {
+                $biglietti_totali = $faker->numberBetween(50, 5000);
+                \App\Models\Event::create([
+                    'organizzatore_id' => $faker->randomElement($organizerIds),
+                    'titolo' => ucfirst($faker->words(3, true)),
+                    'descrizione' => $faker->paragraph(3),
+                    'programma' => "10:00 - Inizio\n13:00 - Pausa Pranzo\n18:00 - Chiusura",
+                    'data' => $faker->dateTimeBetween('now', '+1 year')->format('Y-m-d'),
+                    'orario' => $faker->time('H:i'),
+                    'citta' => $faker->city,
+                    'luogo' => $faker->streetAddress,
+                    'come_raggiungere' => 'Mezzi pubblici: ' . $faker->word,
+                    'categoria' => $categoria,
+                    'prezzo' => $faker->randomFloat(2, 5, 150),
+                    'biglietti_totali' => $biglietti_totali,
+                    'biglietti_disponibili' => $biglietti_totali,
+                    'sconto_giorni' => $faker->optional(0.5)->numberBetween(1, 10),
+                    'sconto_percentuale' => $faker->optional(0.5)->randomFloat(2, 5, 50),
+                ]);
+            }
+        }
     }
 }

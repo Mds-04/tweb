@@ -18,7 +18,6 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
-            'ruolo' => 'required|in:cliente,organizzatore',
             'data_nascita' => 'nullable|date',
         ], [
             'nome.required' => 'Il nome è obbligatorio.',
@@ -30,8 +29,8 @@ class AuthController extends Controller
             'password.min' => 'La password deve contenere almeno 6 caratteri.',
         ]);
 
-        // 2. Determinazione livello
-        $livello = ($request->ruolo === 'organizzatore') ? 3 : 2;
+        // 2. Determinazione livello (forzato a 2 per clienti)
+        $livello = 2;
 
         // 3. Creazione utente
         $user = User::create([

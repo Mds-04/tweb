@@ -78,15 +78,27 @@
             <button class="btn btn-gray">Cerca</button>
             
             <div class="result-founded">
-                <?php echo 'Numero risultati trovati' ?> 
+                {{ count($eventi) }} risultati trovati
             </div>
         </div>
     </section>
 
     <section class="highlighted-section">
-        <div class="carousel-track">
-            <div class="card events" onclick="window.location.href='{{ route('evento.show', ['id' => 1]) }}'"></div> <div class="card events" onclick="window.location.href='{{ route('evento.show', ['id' => 1]) }}'"></div> <div class="card events" onclick="window.location.href='{{ route('evento.show', ['id' => 1]) }}'"></div>
-            <div class="card events" onclick="window.location.href='{{ route('evento.show', ['id' => 1]) }}'"></div> <div class="card events" onclick="window.location.href='{{ route('evento.show', ['id' => 1]) }}'"></div> <div class="card events" onclick="window.location.href='{{ route('evento.show', ['id' => 1]) }}'"></div>
+        <div class="carousel-track" style="flex-wrap: wrap; justify-content: center; overflow-x: hidden;">
+            @forelse($eventi as $evento)
+                <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
+                     onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
+                     @if($evento->immagine)
+                         style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
+                     @endif>
+                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px 10px 10px 10px; color: white; text-align: center; border-radius: 0 0 10px 10px; box-sizing: border-box;">
+                        <h4 style="margin: 0; font-size: 15px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $evento->titolo }}</h4>
+                        <p style="margin: 5px 0 0; font-size: 13px; color: #a3cc4e; font-weight: bold;">{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
+                    </div>
+                </div>
+            @empty
+                <p style="text-align: center; width: 100%; color: white;">Nessun evento disponibile per questa categoria.</p>
+            @endforelse
         </div>
     </section>
 

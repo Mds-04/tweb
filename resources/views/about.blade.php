@@ -41,7 +41,6 @@
                 <p><strong>Sede Legale:</strong> Via Milano 1, 00100 Roma, Italia</p>
                 <p><strong>Partita IVA:</strong> 12345678901</p>
                 <p><strong>Email:</strong> <a href="mailto:info@eventticket.it" style="color: var(--primary-color); text-decoration: none;">info@eventticket.it</a></p>
-                <p><strong>PEC:</strong> <a href="mailto:eventticket@pec.it" style="color: var(--primary-color); text-decoration: none;">eventticket@pec.it</a></p>
                 <p><strong>Telefono:</strong> +39 06 1234567</p>
             </div>
         </div>
@@ -54,10 +53,11 @@
             <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 15px;">
                 <li><strong>Eventi Musicali:</strong> Concerti, festival e live set.</li>
                 <li><strong>Eventi Teatrali:</strong> Spettacoli di prosa, musical e balletti.</li>
+                <li><strong>Manifestazioni letterarie:</strong> Incontri letterari.</li>
                 <li><strong>Mostre:</strong> Esposizioni d'arte contemporanea e classica.</li>
-                <li><strong>Convegni e Manifestazioni:</strong> Incontri letterari, conferenze e seminari.</li>
+                <li><strong>Convegni:</strong> Conferenze e seminari.</li>
             </ul>
-            <p>I servizi di biglietteria vengono forniti tramite acquisto diretto sul nostro portale, garantendo la massima sicurezza nelle transazioni e la ricezione immediata del biglietto in formato digitale via email o SMS. I biglietti possono essere scaricati in formato PDF o aggiunti ai wallet digitali dei propri smartphone.</p>
+            <p>I servizi di biglietteria vengono forniti tramite acquisto diretto sul nostro portale.</p>
         </div>
 
         <div class="standard-header">
@@ -65,16 +65,16 @@
         </div>
         <div style="margin-bottom: 40px; line-height: 1.6; font-size: 16px;">
             <p>Sei un organizzatore di eventi e vuoi vendere i tuoi biglietti su EventTicket? L'adesione è semplice e veloce.</p>
-            <p style="margin-top: 10px;">Crea un account come <strong>Organizzatore</strong> per accedere alla tua dashboard dedicata, dalla quale potrai:</p>
+            <p style="margin-top: 10px;">Per richiedere l'apertura di un account <strong>Organizzatore</strong> e iniziare a pubblicare i tuoi eventi sulla nostra piattaforma, è necessario inviare una richiesta formale all'amministrazione.</p>
+            <p style="margin-top: 10px;">Invia un'email a <a href="mailto:info@eventticket.it" style="color: var(--primary-color); font-weight: bold; text-decoration: none;">info@eventticket.it</a> includendo tutti i seguenti dati obbligatori per la registrazione:</p>
             <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 15px;">
-                <li>Creare e gestire i tuoi eventi in totale autonomia.</li>
-                <li>Monitorare l'andamento delle vendite e degli ingressi in tempo reale.</li>
-                <li>Accedere a report dettagliati e statistiche sul pubblico.</li>
-                <li>Richiedere assistenza dedicata dal nostro team di supporto B2B.</li>
+                <li><strong>Nome dell'Organizzazione</strong></li>
+                <li><strong>Nome e Cognome del Referente</strong></li>
+                <li><strong>Username desiderato</strong> (per l'accesso al sistema)</li>
+                <li><strong>Indirizzo Email aziendale</strong></li>
+                <li><strong>Numero di Telefono</strong></li>
             </ul>
-            <p style="margin-top: 25px;">
-                <button class="btn loginBtn btn-apri-login">Registrati / Accedi per Iniziare</button>
-            </p>
+            <p>Il nostro team valuterà la tua richiesta e, se idonea, provvederà a creare il tuo account riservato inviandoti le credenziali per accedere alla tua dashboard gestionale.</p>
         </div>
 
     </section>
