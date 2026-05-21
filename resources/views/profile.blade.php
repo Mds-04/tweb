@@ -63,12 +63,12 @@
                                         <h4>{{ $acquisto->evento->titolo }}</h4>
                                         <p><i class="fa-solid fa-location-dot"></i> {{ $acquisto->evento->luogo }}, {{ $acquisto->evento->citta }}</p>
                                         <p><i class="fa-solid fa-clock"></i> {{ $acquisto->evento->orario }}</p>
-                                        <p><i class="fa-solid fa-ticket"></i> Biglietti acquistati: <strong>{{ $acquisto->numero_biglietti }}</strong></p>
+                                        <p><i class="fa-solid fa-ticket"></i> Biglietti acquistati: <strong>{{ $acquisto->num_biglietti }}</strong></p>
+                                        <p><i class="fa-solid fa-credit-card"></i> Pagato con: <strong>{{ $acquisto->metodo_pagamento }}</strong></p>
                                     </div>
                                 </div>
                                 <div class="ticket-actions">
-                                    <p style="font-size: 20px; font-weight: bold; color: var(--primary-color); margin-bottom: 10px;">€ {{ number_format($acquisto->importo_totale, 2, ',', '.') }}</p>
-                                    <button class="btn btn-ticket">Scarica PDF</button>
+                                    <p style="font-size: 20px; font-weight: bold; color: var(--primary-color); margin-bottom: 0;">€ {{ number_format($acquisto->totale, 2, ',', '.') }}</p>
                                 </div>
                             </div>
                         @endforeach

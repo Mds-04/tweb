@@ -51,6 +51,11 @@
             color: var(--text-dark);
             font-size: 18px;
         }
+        .item-meta {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
         .btn-remove {
             background: none;
             border: none;
@@ -62,15 +67,49 @@
         .btn-remove:hover {
             color: #cc0000;
         }
+        .btn-update {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+        .btn-update:hover {
+            color: var(--secondary-bg-color);
+        }
         .cart-summary {
             background: white;
             margin-top: 30px;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            text-align: right;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
-        .cart-summary h3 {
+        .payment-methods {
+            flex: 1;
+        }
+        .payment-methods h4 {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        .payment-methods select {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            font-size: 15px;
+        }
+        .summary-totals {
+            text-align: right;
+            flex: 1;
+        }
+        .summary-totals h3 {
             font-size: 24px;
             margin-bottom: 20px;
             color: var(--secondary-bg-color);
@@ -112,6 +151,16 @@
             color: #777;
             margin-bottom: 20px;
         }
+        @media (max-width: 768px) {
+            .cart-summary {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .summary-totals {
+                text-align: left;
+                margin-top: 30px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -129,6 +178,12 @@
             </div>
         @endif
 
+        @if($errors->has('cart'))
+            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                {{ $errors->first('cart') }}
+            </div>
+        @endif
+
         @if(session('cart') && count(session('cart')) > 0)
             <table class="cart-table">
                 <thead>
@@ -137,7 +192,7 @@
                         <th>Prezzo Unitario</th>
                         <th>Quantità</th>
                         <th>Totale</th>
-                        <th>Azioni</th>
+                        <th>Rimuovi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -147,11 +202,23 @@
                         <tr>
                             <td>
                                 <div class="item-name">{{ $details['name'] }}</div>
+                                @if(isset($details['sconto_applicato']) && $details['sconto_applicato'])
+                                    <div class="item-meta" style="color: var(--primary-color);">Sconto Last-Minute Applicato! (Prezzo orig: € {{ number_format($details['original_price'], 2, ',', '.') }})</div>
+                                @endif
                             </td>
                             <td>€ {{ number_format($details['price'], 2, ',', '.') }}</td>
-                            <td>{{ $details['quantity'] }}</td>
-                            <td><strong>€ {{ number_format($details['price'] * $details['quantity'], 2, ',', '.') }}</strong></td>
                             <td>
+                                <form action="{{ route('cart.update', $id) }}" method="POST" style="display: flex; align-items: center;">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="number" name="quantity" value="{{ $details['quantity'] }}" min="1" style="width: 60px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 5px;">
+                                    <button type="submit" class="btn-update" title="Aggiorna Quantità">
+                                        <i class="fa-solid fa-rotate"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td><strong>€ {{ number_format($details['price'] * $details['quantity'], 2, ',', '.') }}</strong></td>
+                            <td style="text-align: center;">
                                 <form action="{{ route('cart.remove', $id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn-remove" title="Rimuovi dal carrello">
@@ -164,11 +231,30 @@
                 </tbody>
             </table>
 
-            <div class="cart-summary">
-                <h3>Totale Ordine</h3>
-                <div class="total-price">€ {{ number_format($total, 2, ',', '.') }}</div>
-                <button class="btn-checkout">Procedi all'Acquisto <i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i></button>
-            </div>
+            <form action="{{ route('cart.checkout') }}" method="POST">
+                @csrf
+                <div class="cart-summary">
+                    <div class="payment-methods">
+                        <h4>Scegli Metodo di Pagamento</h4>
+                        <select name="metodo_pagamento" required>
+                            <option value="">-- Seleziona un metodo --</option>
+                            <option value="Carta di Credito">Carta di Credito / Debito</option>
+                            <option value="PayPal">PayPal</option>
+                            <option value="Klarna">Klarna (Paga in 3 rate)</option>
+                            <option value="Bonifico">Bonifico Bancario</option>
+                        </select>
+                        @error('metodo_pagamento')
+                            <p style="color: #cc0000; font-size: 13px; margin-top: 5px;">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="summary-totals">
+                        <h3>Totale Ordine</h3>
+                        <div class="total-price">€ {{ number_format($total, 2, ',', '.') }}</div>
+                        <button type="submit" class="btn-checkout">Procedi all'Acquisto <i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i></button>
+                    </div>
+                </div>
+            </form>
         @else
             <div class="empty-cart">
                 <i class="fa-solid fa-cart-arrow-down"></i>

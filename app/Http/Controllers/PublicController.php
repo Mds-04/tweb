@@ -73,4 +73,18 @@ class PublicController extends Controller
         $evento = Event::with('organizzatore')->findOrFail($id);
         return view('events.show', compact('evento'));
     }
+
+    public function toggleParticipation($id)
+    {
+        $user = Auth::user();
+        if ($user->livello != 2) return redirect()->back();
+        
+        if ($user->partecipazioni()->where('evento_id', $id)->exists()) {
+            $user->partecipazioni()->detach($id);
+        } else {
+            $user->partecipazioni()->attach($id);
+        }
+        
+        return redirect()->back();
+    }
 }

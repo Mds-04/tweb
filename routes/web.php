@@ -27,12 +27,16 @@ Route::middleware('auth')->get('/profilo', function () {
     return view('profile');
 })->name('profile');
 Route::middleware('auth')->post('/profilo', [\App\Http\Controllers\AuthController::class, 'updateProfile'])->name('profile.update');
+Route::middleware('auth')->post('/evento/{id}/partecipa', [\App\Http\Controllers\PublicController::class, 'toggleParticipation'])->name('evento.partecipa');
 
 // Rotte Carrello
 Route::middleware('auth')->group(function () {
     Route::get('/carrello', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
     Route::post('/carrello/add/{id}', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+    Route::put('/carrello/update/{id}', [\App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
     Route::post('/carrello/remove/{id}', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/carrello/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/carrello/success', [\App\Http\Controllers\CartController::class, 'success'])->name('cart.success');
 });
 
 // Rotte Organizer Dashboard

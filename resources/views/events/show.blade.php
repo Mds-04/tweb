@@ -165,15 +165,36 @@
                     <div class="availability">Disponibilità: <strong>{{ $evento->biglietti_disponibili }}</strong> biglietti</div>
                 </div>
                 <div class="buy-buttons">
-                    <button class="btn-partecipero" onclick="togglePartecipazione(this)">
-                        Parteciperò
-                    </button>
                     @auth
                         @if(Auth::user()->livello == 2)
-                            <form action="{{ route('cart.add', $evento->id) }}" method="POST">
+                            <form action="{{ route('evento.partecipa', $evento->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn loginBtn" style="padding: 15px 40px; font-size: 18px; border: none; cursor: pointer;">
-                                    <i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Aggiungi al Carrello
+                                @if(Auth::user()->partecipazioni()->where('evento_id', $evento->id)->exists())
+                                    <button type="submit" class="btn-partecipero active">
+                                        Partecipi <i class="fa-solid fa-check" style="margin-left: 5px;"></i>
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn-partecipero">
+                                        Parteciperò
+                                    </button>
+                                @endif
+                            </form>
+                        @endif
+                    @else
+                        <button class="btn-partecipero" onclick="document.getElementById('modal-login').classList.add('active')">
+                            Parteciperò
+                        </button>
+                    @endauth
+                    @auth
+                        @if(Auth::user()->livello == 2)
+                            <form action="{{ route('cart.add', $evento->id) }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
+                                @csrf
+                                <div style="display: flex; flex-direction: column;">
+                                    <label for="quantity" style="font-size: 12px; color: #666; margin-bottom: 2px;">Quantità:</label>
+                                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $evento->biglietti_disponibili }}" style="width: 70px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; text-align: center;">
+                                </div>
+                                <button type="submit" class="btn loginBtn" style="padding: 15px 30px; font-size: 16px; border: none; cursor: pointer; height: 100%; margin-top: 18px;">
+                                    <i class="fa-solid fa-cart-plus" style="margin-right: 8px;"></i> Aggiungi
                                 </button>
                             </form>
                         @endif
@@ -210,15 +231,5 @@
     @include('partials.register')
 
     <script src="{{ asset('js/script.js') }}"></script>
-    <script>
-        function togglePartecipazione(btn) {
-            btn.classList.toggle('active');
-            if(btn.classList.contains('active')) {
-                btn.innerHTML = 'Partecipi <i class="fa-solid fa-check" style="margin-left: 5px;"></i>';
-            } else {
-                btn.innerHTML = 'Parteciperò';
-            }
-        }
-    </script>
 </body>
 </html>

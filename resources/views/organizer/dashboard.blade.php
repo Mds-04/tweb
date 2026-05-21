@@ -248,6 +248,7 @@
                     <div class="form-group full-width">
                         <label>Immagine di copertina (Locandina)</label>
                         <input type="file" name="immagine" id="evt_immagine" accept="image/*">
+                        <p style="margin-top: 5px; font-size: 13px; color: #666;"><i class="fa-solid fa-circle-info"></i> Consigliato: immagine con orientamento verticale (es. 600x900 px o proporzione 2:3) per evitare tagli o deformazioni durante la visualizzazione pubblica.</p>
                     </div>
                     <div class="form-group full-width">
                         <label>Descrizione</label>
