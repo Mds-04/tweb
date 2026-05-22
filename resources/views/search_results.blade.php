@@ -24,16 +24,14 @@
     <section class="highlighted-section">
         <div class="carousel-track" style="flex-wrap: wrap; justify-content: center; overflow-x: hidden;">
             @forelse($eventi as $evento)
-                <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
-                     onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                     @if($evento->immagine)
-                         style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                     @endif>
-                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px 10px 10px 10px; color: white; text-align: center; border-radius: 0 0 10px 10px; box-sizing: border-box;">
-                        <h4 style="margin: 0; font-size: 15px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $evento->titolo }}</h4>
-                        <p style="margin: 5px 0 0; font-size: 13px; color: #a3cc4e; font-weight: bold;">{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                    </div>
-                </div>
+                <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
             @empty
                 <p style="text-align: center; width: 100%; color: var(--text-dark);">Nessun evento corrisponde alla tua ricerca.</p>
             @endforelse

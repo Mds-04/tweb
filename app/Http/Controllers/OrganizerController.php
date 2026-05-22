@@ -96,7 +96,7 @@ class OrganizerController extends Controller
             'luogo' => 'required|string|max:255',
             'come_raggiungere' => 'nullable|string',
             'categoria' => 'required|string|max:255',
-            'immagine' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'immagine' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'prezzo' => 'required|numeric|min:0',
             'biglietti_totali' => 'required|integer|min:1',
         ]);

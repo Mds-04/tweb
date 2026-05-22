@@ -7,23 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('img/noBgLogo.png') }}" type="image/x-icon">
-    <style>
-        .card.has-image::before { content: none !important; }
-        .card-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            padding: 20px 10px 10px 10px;
-            color: white;
-            text-align: center;
-            border-radius: 0 0 10px 10px;
-            box-sizing: border-box;
-        }
-        .card-overlay h4 { margin: 0; font-size: 15px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-overlay p { margin: 5px 0 0; font-size: 13px; color: #a3cc4e; font-weight: bold; }
-    </style>
+    
 </head>
 <body>
 
@@ -46,16 +30,14 @@
                 <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="carousel-track">
                     @forelse($prossimiEventi as $evento)
-                        <div class="card {{ $evento->immagine ? 'has-image' : '' }}" 
-                             onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                             @if($evento->immagine)
-                                 style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                             @endif>
-                            <div class="card-overlay">
-                                <h4>{{ $evento->titolo }}</h4>
-                                <p>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                            </div>
-                        </div>
+                        <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
                     @empty
                         <p style="text-align: center; width: 100%; color: white;">Nessun evento in programma.</p>
                     @endforelse
@@ -93,16 +75,14 @@
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track">
                 @forelse($eventiPerCategoria['Eventi Musicali'] as $evento)
-                    <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
-                         onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                         @if($evento->immagine)
-                             style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                         @endif>
-                        <div class="card-overlay">
-                            <h4>{{ $evento->titolo }}</h4>
-                            <p>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
+                    <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
                 @empty
                     <p style="text-align: center; width: 100%;">Nessun evento musicale disponibile.</p>
                 @endforelse
@@ -119,16 +99,14 @@
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track">
                 @forelse($eventiPerCategoria['Eventi Teatrali'] as $evento)
-                    <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
-                         onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                         @if($evento->immagine)
-                             style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                         @endif>
-                        <div class="card-overlay">
-                            <h4>{{ $evento->titolo }}</h4>
-                            <p>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
+                    <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
                 @empty
                     <p style="text-align: center; width: 100%;">Nessun evento teatrale disponibile.</p>
                 @endforelse
@@ -145,16 +123,14 @@
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track">
                 @forelse($eventiPerCategoria['Manifestazioni Letterarie'] as $evento)
-                    <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
-                         onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                         @if($evento->immagine)
-                             style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                         @endif>
-                        <div class="card-overlay">
-                            <h4>{{ $evento->titolo }}</h4>
-                            <p>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
+                    <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
                 @empty
                     <p style="text-align: center; width: 100%;">Nessuna manifestazione letteraria disponibile.</p>
                 @endforelse
@@ -171,16 +147,14 @@
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track">
                 @forelse($eventiPerCategoria['Mostre'] as $evento)
-                    <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
-                         onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                         @if($evento->immagine)
-                             style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                         @endif>
-                        <div class="card-overlay">
-                            <h4>{{ $evento->titolo }}</h4>
-                            <p>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
+                    <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
                 @empty
                     <p style="text-align: center; width: 100%;">Nessuna mostra disponibile.</p>
                 @endforelse
@@ -197,16 +171,14 @@
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track">
                 @forelse($eventiPerCategoria['Convegni'] as $evento)
-                    <div class="card events {{ $evento->immagine ? 'has-image' : '' }}" 
-                         onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'"
-                         @if($evento->immagine)
-                             style="background-image: url('{{ Storage::url($evento->immagine) }}'); background-size: cover; background-position: center;"
-                         @endif>
-                        <div class="card-overlay">
-                            <h4>{{ $evento->titolo }}</h4>
-                            <p>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</p>
-                        </div>
-                    </div>
+                    <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
+    <div class="card-info">
+        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+        <div class="title">{{ $evento->titolo }}</div>
+        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
+    </div>
+</div>
                 @empty
                     <p style="text-align: center; width: 100%;">Nessun convegno disponibile.</p>
                 @endforelse

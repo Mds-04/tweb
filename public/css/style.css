@@ -239,7 +239,7 @@ body {
 
 .carousel-track {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
     scrollbar-width: none; /* Firefox */
@@ -250,31 +250,65 @@ body {
 .carousel-track::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
 
 .card {
-    min-width: 200px;
-    height: 300px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    flex-shrink: 0;
-    border-bottom: 25px solid #a3cc4e; /* Simula l'erba/sfondo della tua immagine */
+    width: 250px;
+    flex: 0 0 250px;
+    background-color: white;
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease !important;
-}
-
-.card::before {
-    content: "\f0c2"; /* Icona nuvola di FontAwesome per simulare l'immagine */
-    font-family: "FontAwesome";
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .card:hover {
-    transform: scale(1.05) !important;
+    transform: scale(1.03) !important;
+}
+
+.card-image {
+    height: 220px;
+    background-color: #e0e0e0;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.card-info {
+    padding: 15px;
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-info .date {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+}
+
+.card-info .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-info .location {
+    font-size: 13px;
+    color: #666;
+    margin-top: auto;
+}
+
+.card-info .location i {
+    color: #f13036;
+    margin-right: 5px;
 }
 
 /* Pulsanti frecce carosello */
@@ -648,18 +682,7 @@ footer {
     font-size: 14px;
 }
 
-#eventi-musicali .highlighted-section .carousel-track {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, 200px);
-    overflow: visible;
-    justify-content: center;
-    /* padding: 15px;
-    width: 100%; */
-}
-
-#eventi-musicali .highlighted-section .card {
-    width: 100%;
-}
+/* rimossi vecchi stili a griglia per eventi musicali */
 
 /* --- CUSTOM DROPDOWNS (Stile TicketSms) --- */
 .custom-dropdown {
@@ -767,16 +790,7 @@ footer {
         grid-template-columns: 1fr !important; 
     }
 
-    #eventi-musicali .highlighted-section .carousel-track {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        padding: 15px 5px;
-    }
-
-    #eventi-musicali .highlighted-section .carousel-track .card {
-        min-width: 150px;
-        max-width: 175px;
-        height: 225px;
-    }
+    /* rimosse grid query */
 }
 
 /* ================= AREA PERSONALE (DASHBOARD) ================= */
