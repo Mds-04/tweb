@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('img/noBgLogo.png') }}" type="image/x-icon">
 </head>
+
 <body id="search-results">
 
     @include('partials.header')
@@ -24,16 +26,22 @@
     <section class="highlighted-section">
         <div class="carousel-track" style="flex-wrap: wrap; justify-content: center; overflow-x: hidden;">
             @forelse($eventi as $evento)
-                <div class="card {{ $evento->immagine ? 'has-image' : '' }}" onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
-    <div class="card-image" @if($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif></div>
-    <div class="card-info">
-        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} / {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
-        <div class="title">{{ $evento->titolo }}</div>
-        <div class="location"><i class="fa-solid fa-location-dot"></i> {{ $evento->luogo ?? 'Location' }}</div>
-    </div>
-</div>
+                <div class="card {{ $evento->immagine ? 'has-image' : '' }}"
+                    onclick="window.location.href='{{ route('evento.show', ['id' => $evento->id]) }}'">
+                    <div class="card-image"
+                        @if ($evento->immagine) style="background-image: url('{{ Storage::url($evento->immagine) }}');" @endif>
+                    </div>
+                    <div class="card-info">
+                        <div class="date">{{ \Carbon\Carbon::parse($evento->data)->translatedFormat('l d F Y') }} /
+                            {{ \Carbon\Carbon::parse($evento->orario)->format('H:i') }}</div>
+                        <div class="title">{{ $evento->titolo }}</div>
+                        <div class="location"><i class="fa-solid fa-location-dot"></i>
+                            {{ $evento->luogo ?? 'Location' }}</div>
+                    </div>
+                </div>
             @empty
-                <p style="text-align: center; width: 100%; color: var(--text-dark);">Nessun evento corrisponde alla tua ricerca.</p>
+                <p style="text-align: center; width: 100%; color: var(--text-dark);">Nessun evento corrisponde alla tua
+                    ricerca.</p>
             @endforelse
         </div>
     </section>
@@ -48,4 +56,5 @@
 
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
+
 </html>

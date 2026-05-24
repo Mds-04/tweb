@@ -19,7 +19,7 @@ class PublicController extends Controller
             ->orderBy('data', 'asc')
             ->take(12)
             ->get();
-            
+
         // Fallback: se non ci sono eventi futuri
         if ($prossimiEventi->isEmpty()) {
             $prossimiEventi = Event::orderBy('data', 'asc')->take(12)->get();
@@ -75,7 +75,7 @@ class PublicController extends Controller
             $query->where('titolo', 'like', '%' . $request->search . '%');
         }
         if ($request->filled('luogo') && $request->luogo !== 'Tutta Italia') {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('citta', 'like', '%' . $request->luogo . '%')
                   ->orWhere('luogo', 'like', '%' . $request->luogo . '%');
             });
@@ -91,7 +91,7 @@ class PublicController extends Controller
                   ->orWhere('descrizione', 'like', '%' . $request->q . '%');
         }
         $eventi = $query->orderBy('data', 'asc')->get();
-        // Possiamo riusare una vista di categoria per mostrare i risultati, 
+        // Possiamo riusare una vista di categoria per mostrare i risultati,
         // per semplicità riusiamo eventiMusicali passando i risultati e nascondendo i dropdown non voluti
         // o meglio creiamo una nuova view search_results
         return view('search_results', compact('eventi'));
@@ -106,14 +106,16 @@ class PublicController extends Controller
     public function toggleParticipation($id)
     {
         $user = Auth::user();
-        if ($user->livello != 2) return redirect()->back();
-        
+        if ($user->livello != 2) {
+            return redirect()->back();
+        }
+
         if ($user->partecipazioni()->where('evento_id', $id)->exists()) {
             $user->partecipazioni()->detach($id);
         } else {
             $user->partecipazioni()->attach($id);
         }
-        
+
         return redirect()->back();
     }
 }

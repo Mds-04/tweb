@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,7 +15,6 @@ return new class extends Migration
             $table->foreignId('cliente_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('evento_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();
-            
             $table->unique(['cliente_id', 'evento_id']);
         });
     }

@@ -16,3 +16,4 @@
         &copy; EventTicket | Tutti i diritti riservati | 2026
     </div>
 </footer>
+

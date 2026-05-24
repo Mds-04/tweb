@@ -20,7 +20,7 @@ class CartController extends Controller
     public function add(Request $request, $id)
     {
         $request->validate([
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
         ]);
 
         $evento = Event::findOrFail($id);
@@ -35,7 +35,7 @@ class CartController extends Controller
         // Calcolo eventuale prezzo scontato
         $prezzo_finale = $evento->prezzo;
         $sconto_applicato = false;
-        
+
         if ($evento->sconto_giorni > 0 && $evento->sconto_percentuale > 0) {
             $giorni_mancanti = \Carbon\Carbon::today()->diffInDays(\Carbon\Carbon::parse($evento->data), false);
             if ($giorni_mancanti >= 0 && $giorni_mancanti <= $evento->sconto_giorni) {
@@ -44,7 +44,7 @@ class CartController extends Controller
             }
         }
 
-        if(isset($cart[$id])) {
+        if (isset($cart[$id])) {
             $nuovaQuantita = $cart[$id]['quantity'] + $quantitaRichiesta;
             if ($evento->biglietti_disponibili < $nuovaQuantita) {
                 return redirect()->back()->withErrors(['cart' => 'Non puoi aggiungere altri biglietti per questo evento. Disponibilità superata.']);
@@ -56,29 +56,29 @@ class CartController extends Controller
                 "quantity" => $quantitaRichiesta,
                 "price" => $prezzo_finale,
                 "original_price" => $evento->prezzo,
-                "sconto_applicato" => $sconto_applicato
+                "sconto_applicato" => $sconto_applicato,
             ];
         }
 
         session()->put('cart', $cart);
-        
+
         return redirect()->back()->with('success', 'Aggiunto al carrello con successo!');
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
         ]);
 
         $cart = session()->get('cart');
 
-        if(isset($cart[$id])) {
+        if (isset($cart[$id])) {
             $evento = Event::findOrFail($id);
             if ($evento->biglietti_disponibili < $request->quantity) {
                 return redirect()->back()->withErrors(['cart' => 'Disponibilità non sufficiente per l\'evento: ' . $evento->titolo]);
             }
-            
+
             $cart[$id]['quantity'] = $request->quantity;
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Quantità aggiornata.');
@@ -89,9 +89,9 @@ class CartController extends Controller
 
     public function remove(Request $request, $id)
     {
-        if($id) {
+        if ($id) {
             $cart = session()->get('cart');
-            if(isset($cart[$id])) {
+            if (isset($cart[$id])) {
                 unset($cart[$id]);
                 session()->put('cart', $cart);
             }
@@ -108,7 +108,7 @@ class CartController extends Controller
         }
 
         $request->validate([
-            'metodo_pagamento' => 'required|string|in:PayPal,Carta di Credito,Klarna,Bonifico'
+            'metodo_pagamento' => 'required|string|in:PayPal,Carta di Credito,Klarna,Bonifico',
         ]);
 
         $codice_ordine = 'ORD-' . strtoupper(Str::random(10));
@@ -143,11 +143,10 @@ class CartController extends Controller
                     $purchases[] = [
                         'titolo' => $evento->titolo,
                         'quantita' => $details['quantity'],
-                        'totale' => $acquisto->totale
+                        'totale' => $acquisto->totale,
                     ];
                 }
             });
-
         } catch (\Exception $e) {
             return redirect()->route('cart.index')->withErrors(['cart' => $e->getMessage()]);
         }

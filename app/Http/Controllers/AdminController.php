@@ -13,10 +13,10 @@ class AdminController extends Controller
         $clienti = User::where('livello', 2)->get();
         $organizzatori = User::with(['eventiOrganizzati.acquisti'])->where('livello', 3)->get();
 
-        foreach($organizzatori as $org) {
+        foreach ($organizzatori as $org) {
             $biglietti_venduti = 0;
             $incasso_totale = 0;
-            foreach($org->eventiOrganizzati as $evento) {
+            foreach ($org->eventiOrganizzati as $evento) {
                 $biglietti_venduti += $evento->acquisti->sum('num_biglietti');
                 $incasso_totale += $evento->acquisti->sum('totale');
             }

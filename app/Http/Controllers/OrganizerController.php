@@ -14,7 +14,7 @@ class OrganizerController extends Controller
     public function dashboard()
     {
         $organizzatore = Auth::user();
-        
+
         // Recuperiamo gli eventi gestiti dall'organizzatore, con il numero di acquisti (biglietti venduti)
         // Calcoliamo i biglietti venduti aggregando i 'numero_biglietti' dalla relazione 'acquisti'
         $eventi = Event::with('acquisti')
@@ -25,7 +25,7 @@ class OrganizerController extends Controller
         foreach ($eventi as $evento) {
             $biglietti_venduti = $evento->acquisti->sum('num_biglietti');
             $incasso_totale = $evento->acquisti->sum('totale');
-            
+
             $percentuale_venduti = 0;
             if ($evento->biglietti_totali > 0) {
                 $percentuale_venduti = round(($biglietti_venduti / $evento->biglietti_totali) * 100, 2);

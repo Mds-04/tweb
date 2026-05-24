@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('img/noBgLogo.png') }}" type="image/x-icon">
 </head>
+
 <body class="dashboard-body">
 
     <div class="dashboard-container">
@@ -18,7 +20,8 @@
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <h3>Admin</h3>
-                <span class="role-badge" style="background-color: #ffffff; color: #cc0000; font-weight: bold;">AMMINISTRATORE</span>
+                <span class="role-badge"
+                    style="background-color: #ffffff; color: #cc0000; font-weight: bold;">AMMINISTRATORE</span>
             </div>
 
             <nav class="sidebar-nav">
@@ -34,7 +37,8 @@
             </nav>
 
             <div class="sidebar-footer">
-                <button type="button" class="logout-btn" onclick="document.getElementById('modal-logout').classList.add('active')">
+                <button type="button" class="logout-btn"
+                    onclick="document.getElementById('modal-logout').classList.add('active')">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </button>
             </div>
@@ -42,15 +46,15 @@
 
         <!-- Main Content -->
         <main class="dashboard-main">
-            @if(session('success_admin'))
+            @if (session('success_admin'))
                 <div class="alert alert-success">
                     {{ session('success_admin') }}
                 </div>
             @endif
-            @if($errors->any())
+            @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
-                        @foreach($errors->all() as $error)
+                        @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
@@ -60,10 +64,13 @@
             <!-- SEZIONE 1: Analisi Vendite Organizzazioni -->
             <section id="analisi" class="dashboard-section active">
                 <h2>Analisi Vendite Organizzazioni</h2>
-                
+
                 <div class="search-bar-container" style="position: relative; margin-bottom: 20px;">
-                    <input type="text" id="search-analisi" class="search-input" placeholder="Cerca organizzazione..." onkeydown="if(event.key === 'Enter') filterTable('search-analisi', 'table-analisi')" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit;">
-                    <i class="fa-solid fa-magnifying-glass" onclick="filterTable('search-analisi', 'table-analisi')" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
+                    <input type="text" id="search-analisi" class="search-input" placeholder="Cerca organizzazione..."
+                        onkeydown="if(event.key === 'Enter') filterTable('search-analisi', 'table-analisi')"
+                        style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit;">
+                    <i class="fa-solid fa-magnifying-glass" onclick="filterTable('search-analisi', 'table-analisi')"
+                        style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
                 </div>
 
                 <div class="table-responsive">
@@ -98,12 +105,18 @@
             <section id="organizzatori" class="dashboard-section" style="display: none;">
                 <div class="section-header">
                     <h2>Gestione Organizzatori</h2>
-                    <button class="btn btn-primary" onclick="openOrganizerModal()"><i class="fa-solid fa-plus"></i> Crea Nuovo Organizzatore</button>
+                    <button class="btn btn-primary" onclick="openOrganizerModal()"><i class="fa-solid fa-plus"></i> Crea
+                        Nuovo Organizzatore</button>
                 </div>
-                
+
                 <div class="search-bar-container" style="position: relative; margin-bottom: 20px;">
-                    <input type="text" id="search-organizzatori" class="search-input" placeholder="Cerca organizzazione..." onkeydown="if(event.key === 'Enter') filterTable('search-organizzatori', 'table-organizzatori')" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit;">
-                    <i class="fa-solid fa-magnifying-glass" onclick="filterTable('search-organizzatori', 'table-organizzatori')" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
+                    <input type="text" id="search-organizzatori" class="search-input"
+                        placeholder="Cerca organizzazione..."
+                        onkeydown="if(event.key === 'Enter') filterTable('search-organizzatori', 'table-organizzatori')"
+                        style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit;">
+                    <i class="fa-solid fa-magnifying-glass"
+                        onclick="filterTable('search-organizzatori', 'table-organizzatori')"
+                        style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
                 </div>
 
                 <div class="table-responsive">
@@ -118,15 +131,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($organizzatori as $org)
+                            @foreach ($organizzatori as $org)
                                 <tr>
                                     <td>{{ $org->organizzazione }}</td>
                                     <td>{{ $org->username }}</td>
                                     <td>{{ $org->email }}</td>
                                     <td>{{ $org->telefono }}</td>
                                     <td class="actions-cell">
-                                        <button class="btn-icon edit" onclick="openOrganizerModal({{ $org->toJson() }})"><i class="fa-solid fa-pen"></i></button>
-                                        <button type="button" class="btn-icon delete" onclick="openDeleteModal('{{ route('admin.organizzatori.destroy', $org->id) }}', 'Vuoi davvero eliminare questo organizzatore? Tutti i suoi eventi andranno persi.')"><i class="fa-solid fa-trash"></i></button>
+                                        <button class="btn-icon edit"
+                                            onclick="openOrganizerModal({{ $org->toJson() }})"><i
+                                                class="fa-solid fa-pen"></i></button>
+                                        <button type="button" class="btn-icon delete"
+                                            onclick="openDeleteModal('{{ route('admin.organizzatori.destroy', $org->id) }}', 'Vuoi davvero eliminare questo organizzatore? Tutti i suoi eventi andranno persi.')"><i
+                                                class="fa-solid fa-trash"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -140,8 +157,12 @@
                 <h2>Gestione Clienti</h2>
 
                 <div class="search-bar-container" style="position: relative; margin-bottom: 20px;">
-                    <input type="text" id="search-clienti" class="search-input" placeholder="Cerca username cliente..." onkeydown="if(event.key === 'Enter') filterTable('search-clienti', 'table-clienti', 1)" style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit;">
-                    <i class="fa-solid fa-magnifying-glass" onclick="filterTable('search-clienti', 'table-clienti', 1)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
+                    <input type="text" id="search-clienti" class="search-input"
+                        placeholder="Cerca username cliente..."
+                        onkeydown="if(event.key === 'Enter') filterTable('search-clienti', 'table-clienti', 1)"
+                        style="width: 100%; padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit;">
+                    <i class="fa-solid fa-magnifying-glass" onclick="filterTable('search-clienti', 'table-clienti', 1)"
+                        style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
                 </div>
 
                 <div class="table-responsive">
@@ -156,14 +177,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($clienti as $cliente)
+                            @foreach ($clienti as $cliente)
                                 <tr>
                                     <td>{{ $cliente->nome }} {{ $cliente->cognome }}</td>
                                     <td>{{ $cliente->username }}</td>
                                     <td>{{ $cliente->email }}</td>
                                     <td>{{ $cliente->created_at->format('d/m/Y') }}</td>
                                     <td class="actions-cell">
-                                        <button type="button" class="btn-icon delete" onclick="openDeleteModal('{{ route('admin.clienti.destroy', $cliente->id) }}', 'Vuoi davvero eliminare questo cliente?')"><i class="fa-solid fa-trash"></i></button>
+                                        <button type="button" class="btn-icon delete"
+                                            onclick="openDeleteModal('{{ route('admin.clienti.destroy', $cliente->id) }}', 'Vuoi davvero eliminare questo cliente?')"><i
+                                                class="fa-solid fa-trash"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -176,14 +199,15 @@
 
     <!-- Modal per Creazione/Modifica Organizzatore -->
     <div id="organizerModal" class="modal-overlay">
-        <div class="modal-content large-modal" style="padding: 0; border-radius: 12px; overflow: hidden; background: #fff;">
+        <div class="modal-content large-modal"
+            style="padding: 0; border-radius: 12px; overflow: hidden; background: #fff;">
             <div style="max-height: 90vh; overflow-y: auto; padding: 30px; position: relative;">
                 <span class="chiudi-modal" onclick="closeOrganizerModal()">&times;</span>
                 <h2 id="modalTitle">Nuovo Organizzatore</h2>
                 <form id="organizerForm" action="{{ route('admin.organizzatori.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="_method" id="formMethod" value="POST">
-                    
+
                     <div class="form-grid">
                         <div class="form-group full-width">
                             <label>Nome Organizzazione *</label>
@@ -214,9 +238,10 @@
                             <input type="text" name="telefono" id="org_telefono">
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary" id="submitOrganizerBtn" style="margin-top: 15px;">Salva Organizzatore</button>
+                        <button type="submit" class="btn btn-primary" id="submitOrganizerBtn"
+                            style="margin-top: 15px;">Salva Organizzatore</button>
                     </div>
                 </form>
             </div>
@@ -227,15 +252,20 @@
     <div id="deleteModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 400px; text-align: center; padding: 40px 30px;">
             <span class="chiudi-modal" onclick="closeDeleteModal()">&times;</span>
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 50px; color: #cc0000; margin-bottom: 20px;"></i>
+            <i class="fa-solid fa-triangle-exclamation"
+                style="font-size: 50px; color: #cc0000; margin-bottom: 20px;"></i>
             <h2 style="margin-bottom: 10px;">Sei sicuro?</h2>
-            <p id="deleteModalText" style="margin-bottom: 30px; color: #666; font-size: 15px;">Vuoi davvero eliminare questo elemento?</p>
+            <p id="deleteModalText" style="margin-bottom: 30px; color: #666; font-size: 15px;">Vuoi davvero eliminare
+                questo elemento?</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
-                <button class="btn btn-gray" onclick="closeDeleteModal()" style="flex: 1; padding: 12px; border-radius: 25px;">Annulla</button>
+                <button class="btn btn-gray" onclick="closeDeleteModal()"
+                    style="flex: 1; padding: 12px; border-radius: 25px;">Annulla</button>
                 <form id="deleteForm" method="POST" style="flex: 1; margin: 0;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-submit" style="width: 100%; border-radius: 25px; padding: 12px; font-size: 16px; background: #cc0000;">Sì, Elimina</button>
+                    <button type="submit" class="btn-submit"
+                        style="width: 100%; border-radius: 25px; padding: 12px; font-size: 16px; background: #cc0000;">Sì,
+                        Elimina</button>
                 </form>
             </div>
         </div>
@@ -290,7 +320,7 @@
                 title.innerText = 'Modifica Organizzatore';
                 form.action = `/admin/organizzatori/${org.id}`;
                 methodInput.value = 'PUT';
-                
+
                 pwdInfo.innerText = '(Lascia vuoto per non cambiarla)';
                 pwdInput.removeAttribute('required');
 
@@ -307,7 +337,7 @@
                 form.action = `{{ route('admin.organizzatori.store') }}`;
                 methodInput.value = 'POST';
                 form.reset();
-                
+
                 pwdInfo.innerText = '* (Obbligatoria)';
                 pwdInput.setAttribute('required', 'required');
             }
@@ -338,4 +368,5 @@
         }
     </script>
 </body>
+
 </html>
