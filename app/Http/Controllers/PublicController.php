@@ -85,15 +85,24 @@ class PublicController extends Controller
 
     public function search(Request $request)
     {
-        $query = Event::query();
-        if ($request->filled('q')) {
-            $query->where('titolo', 'like', '%' . $request->q . '%')
-                  ->orWhere('descrizione', 'like', '%' . $request->q . '%');
-        }
-        $eventi = $query->orderBy('data', 'asc')->get();
-        // Possiamo riusare una vista di categoria per mostrare i risultati,
-        // per semplicità riusiamo eventiMusicali passando i risultati e nascondendo i dropdown non voluti
-        // o meglio creiamo una nuova view search_results
+        $eventi = Event::with('organizzatore')
+            ->when($request->q, function ($query, $q) {
+                $q = trim($q);
+                if (str_ends_with($q, '*')) {
+                    $cleanTerm = rtrim($q, '*');
+                    $pattern = '%' . $cleanTerm . '%';
+
+                    return $query->where('descrizione', 'like', $pattern);
+                } else {
+                    return $query->where(function ($r) use ($q) {
+                        $r->where('descrizione', 'LIKE', $q . ' %')                                    ->orWhere('descrizione', 'LIKE', '% ' . $q . ' %')
+                          ->orWhere('descrizione', 'LIKE', '% ' . $q)
+                          ->orWhere('descrizione', '=', $q);
+                    });
+                }
+            })
+            ->orderBy('data')
+            ->get();
         return view('search_results', compact('eventi'));
     }
 
