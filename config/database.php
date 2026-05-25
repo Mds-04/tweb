@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-require(__DIR__ . '/../../include/connect.php');
+//require(__DIR__ . '/../../include/connect.php');
 
 return [
 
@@ -64,7 +64,7 @@ return [
             ]) : [],
         ],
 
-        'mariadb' => [
+        /*'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
             'host' => $HOST,
@@ -82,7 +82,7 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
-        ],
+        ],*/
 
         'pgsql' => [
             'driver' => 'pgsql',

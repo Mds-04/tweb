@@ -63,10 +63,10 @@
             </div>
         @endif
 
-        <form action="{{ route('register.post') }}" method="POST">
+        <form action="{{ route('register') }}" method="POST">
             @csrf
             <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group" style="flex: 1 1 50%; max-width: 50%;">
                     <label for="reg-nome">Nome</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-user icon"></i>
@@ -74,7 +74,7 @@
                             style="padding-top: 10px; padding-bottom: 10px;">
                     </div>
                 </div>
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group" style="flex: 1 1 50%; max-width: 50%;">
                     <label for="reg-cognome">Cognome</label>
                     <div class="input-wrapper">
                         <i class="fa-regular fa-user icon"></i>
@@ -85,7 +85,7 @@
             </div>
 
             <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group" style="flex: 1 1 50%; max-width: 50%;">
                     <label for="reg-username">Username</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-at icon"></i>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group" style="flex: 1 1 50%; max-width: 50%;">
                     <label for="reg-email">Email</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-envelope icon"></i>
@@ -105,16 +105,15 @@
             </div>
 
             <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group" style="flex: 1 1 50%; max-width: 50%;">
                     <label for="reg-data-nascita">Data di Nascita</label>
                     <div class="input-wrapper">
-                        <i class="fa-regular fa-calendar icon"></i>
                         <input type="date" id="reg-data-nascita" name="data_nascita"
                             style="padding-left: 35px; width: 100%; border: 1px solid #ccc; border-radius: 6px; padding-top: 10px; padding-bottom: 10px;">
                     </div>
                 </div>
 
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group" style="flex: 1 1 50%; max-width: 50%;">
                     <label for="reg-password">Password</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock icon"></i>

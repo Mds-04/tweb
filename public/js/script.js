@@ -8,7 +8,7 @@ function scrollToTop() {
     });
 }
 
-// --- 2. GESTIONE CAROSELLI (Manuale, Automatico, Hover, Frecce e Inversione) ---
+// --- 2. GESTIONE CAROSELLI (Manuale, Automatico, Hover, Frecce) ---
 
 // Funzione per i click manuali sulle frecce
 function scrollCarousel(button, amount) {
@@ -338,67 +338,5 @@ if(modalLogout) {
         if (event.target === modalLogout) {
             chiudiModalLogout();
         }
-    });
-}
-
-// --- 8. GESTIONE MODAL PAGAMENTI E FATTURAZIONE ---
-const modalAddCard = document.getElementById('modal-add-card');
-const btnApriAddCard = document.getElementById('btn-apri-add-card');
-const btnChiudiAddCard = document.getElementById('btn-chiudi-add-card');
-
-const modalEditBilling = document.getElementById('modal-edit-billing');
-const btnApriEditBilling = document.getElementById('btn-apri-edit-billing');
-const btnChiudiEditBilling = document.getElementById('btn-chiudi-edit-billing');
-
-// ---> Gestione Apertura/Chiusura Modal Aggiungi Carta
-if(btnApriAddCard && modalAddCard) {
-    btnApriAddCard.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalAddCard.classList.add('active');
-    });
-}
-if(btnChiudiAddCard && modalAddCard) {
-    btnChiudiAddCard.addEventListener('click', () => modalAddCard.classList.remove('active'));
-}
-if(modalAddCard) {
-    modalAddCard.addEventListener('click', (e) => {
-        if(e.target === modalAddCard) modalAddCard.classList.remove('active');
-    });
-}
-
-// ---> Gestione Apertura/Chiusura Modal Modifica Fatturazione
-if(btnApriEditBilling && modalEditBilling) {
-    btnApriEditBilling.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalEditBilling.classList.add('active');
-    });
-}
-if(btnChiudiEditBilling && modalEditBilling) {
-    btnChiudiEditBilling.addEventListener('click', () => modalEditBilling.classList.remove('active'));
-}
-if(modalEditBilling) {
-    modalEditBilling.addEventListener('click', (e) => {
-        if(e.target === modalEditBilling) modalEditBilling.classList.remove('active');
-    });
-}
-
-// --- 9. GESTIONE MODAL ELIMINA ACCOUNT ---
-const modalDeleteAccount = document.getElementById('modal-delete-account');
-const btnApriDeleteAccount = document.getElementById('btn-apri-delete-account');
-const btnChiudiDeleteAccount = document.getElementById('btn-chiudi-delete-account');
-
-// ---> Gestione Apertura/Chiusura Modal Aggiungi Carta
-if(btnApriDeleteAccount && modalDeleteAccount) {
-    btnApriDeleteAccount.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalDeleteAccount.classList.add('active');
-    });
-}
-if(btnChiudiDeleteAccount && modalDeleteAccount) {
-    btnChiudiDeleteAccount.addEventListener('click', () => modalDeleteAccount.classList.remove('active'));
-}
-if(modalDeleteAccount) {
-    modalDeleteAccount.addEventListener('click', (e) => {
-        if(e.target === modalDeleteAccount) modalDeleteAccount.classList.remove('active');
     });
 }
