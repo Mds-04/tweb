@@ -91,9 +91,6 @@ class PublicController extends Controller
                   ->orWhere('descrizione', 'like', '%' . $request->q . '%');
         }
         $eventi = $query->orderBy('data', 'asc')->get();
-        // Possiamo riusare una vista di categoria per mostrare i risultati,
-        // per semplicità riusiamo eventiMusicali passando i risultati e nascondendo i dropdown non voluti
-        // o meglio creiamo una nuova view search_results
         return view('search_results', compact('eventi'));
     }
 

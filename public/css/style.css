@@ -564,6 +564,20 @@ footer {
     border-color: var(--primary-color); 
 }
 
+.input-wrapper input[type="date"] {
+    position: relative;
+}
+
+.input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background-color: transparent;
+    color: #888;
+}
+
 .form-options {
     display: flex;
     justify-content: space-between;

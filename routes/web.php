@@ -18,16 +18,12 @@ Route::get('/search', [\App\Http\Controllers\PublicController::class, 'search'])
 
 Route::get('/evento/{id}', [\App\Http\Controllers\PublicController::class, 'show'])->name('evento.show');
 
-// Rotte per l'Autenticazione
-Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register.post');
-Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
-
 // Rotta per il Profilo (protetta da middleware auth)
 Route::middleware('auth')->get('/profilo', function () {
     return view('profile');
 })->name('profile');
-Route::middleware('auth')->post('/profilo', [\App\Http\Controllers\AuthController::class, 'updateProfile'])->name('profile.update');
+Route::middleware('auth')->post('/profilo', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
 Route::middleware('auth')->post('/evento/{id}/partecipa', [\App\Http\Controllers\PublicController::class, 'toggleParticipation'])->name('evento.partecipa');
 
 // Rotte Carrello
@@ -58,3 +54,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/organizzatori/{id}', [\App\Http\Controllers\AdminController::class, 'destroyOrganizer'])->name('admin.organizzatori.destroy');
     Route::delete('/clienti/{id}', [\App\Http\Controllers\AdminController::class, 'destroyClient'])->name('admin.clienti.destroy');
 });
+
+require __DIR__.'/auth.php';
