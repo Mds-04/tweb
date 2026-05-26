@@ -229,6 +229,10 @@ dropdowns.forEach(dropdown => {
             // Se non è il tasto "Seleziona date..." (che apre il modal)
             if(item.id !== 'apri-calendario') {
                 selectedText.innerText = item.innerText;
+                const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+                if (hiddenInput) {
+                    hiddenInput.value = item.innerText === 'Tutta Italia' ? '' : item.innerText;
+                }
                 dropdown.classList.remove('active'); // Chiudi il menu
             }
         });
@@ -247,12 +251,82 @@ const inputCitta = document.getElementById('input-citta');
 const btnConfermaCitta = document.getElementById('btn-conferma-citta');
 const selectedLuogo = document.querySelector('#dd-luogo .dd-selected');
 const dropdownLuogo = document.getElementById('dd-luogo');
+const hiddenLuogo = document.getElementById('hidden-luogo');
+
+if(inputCitta) {
+    // Creazione del contenitore per l'autocomplete
+    const autocompleteList = document.createElement('div');
+    autocompleteList.setAttribute('id', 'autocomplete-list');
+    autocompleteList.setAttribute('class', 'autocomplete-items');
+    inputCitta.parentNode.appendChild(autocompleteList);
+
+    function fetchAndShowLocations(val) {
+        autocompleteList.innerHTML = '';
+        fetch('/api/locations?q=' + encodeURIComponent(val))
+            .then(response => response.json())
+            .then(data => {
+                autocompleteList.innerHTML = '';
+                if(data.length > 0) {
+                    autocompleteList.classList.add('active');
+                    data.forEach(item => {
+                        const div = document.createElement('div');
+                        
+                        // Evidenzia la parte di testo che corrisponde alla ricerca solo se c'è un input
+                        if (val) {
+                            const matchIndex = item.toLowerCase().indexOf(val.toLowerCase());
+                            if (matchIndex >= 0) {
+                                div.innerHTML = item.substring(0, matchIndex) + "<strong>" + item.substring(matchIndex, matchIndex + val.length) + "</strong>" + item.substring(matchIndex + val.length);
+                            } else {
+                                div.innerHTML = item;
+                            }
+                        } else {
+                            div.innerHTML = item;
+                        }
+                        
+                        div.innerHTML += "<input type='hidden' value='" + item + "'>";
+                        div.addEventListener('click', function(e) {
+                            inputCitta.value = this.getElementsByTagName("input")[0].value;
+                            // Aggiorna anche il dropdown principale
+                            if (selectedLuogo) selectedLuogo.innerText = inputCitta.value;
+                            if (hiddenLuogo) hiddenLuogo.value = inputCitta.value;
+                            autocompleteList.innerHTML = '';
+                            autocompleteList.classList.remove('active');
+                            if (dropdownLuogo) dropdownLuogo.classList.remove('active');
+                        });
+                        autocompleteList.appendChild(div);
+                    });
+                } else {
+                    autocompleteList.classList.remove('active');
+                }
+            })
+            .catch(error => {
+                console.error("Errore nel fetch delle città:", error);
+            });
+    }
+
+    inputCitta.addEventListener('input', function() {
+        fetchAndShowLocations(this.value);
+    });
+
+    inputCitta.addEventListener('focus', function() {
+        fetchAndShowLocations(this.value);
+    });
+
+    // Chiudi autocomplete se si clicca fuori
+    document.addEventListener('click', function (e) {
+        if (e.target !== inputCitta && e.target !== autocompleteList) {
+            autocompleteList.innerHTML = '';
+            autocompleteList.classList.remove('active');
+        }
+    });
+}
 
 if(btnConfermaCitta && inputCitta) {
     btnConfermaCitta.addEventListener('click', () => {
         if(inputCitta.value.trim() !== "") {
-            selectedLuogo.innerText = inputCitta.value;
-            dropdownLuogo.classList.remove('active');
+            if (selectedLuogo) selectedLuogo.innerText = inputCitta.value;
+            if (hiddenLuogo) hiddenLuogo.value = inputCitta.value;
+            if (dropdownLuogo) dropdownLuogo.classList.remove('active');
             inputCitta.value = ""; // Svuoto l'input
         }
     });

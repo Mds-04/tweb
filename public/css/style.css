@@ -450,7 +450,11 @@ footer {
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 15px;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    text-align: center;
+    line-height: 50px;
     border-radius: 50%;
     font-size: 18px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -745,7 +749,6 @@ footer {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
-    overflow: hidden;
 }
 
 /* Quando il dropdown è aperto */
@@ -778,12 +781,23 @@ footer {
     color: var(--primary-color);
 }
 
+.dd-item:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
 /* Input personalizzato dentro il dropdown "Luogo" */
 .dd-input-wrapper {
     padding: 15px;
     display: flex;
     gap: 10px;
     background-color: var(--bg-light);
+    position: relative;
+}
+
+.dd-input-wrapper:last-child {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .dd-input-wrapper input {
@@ -796,6 +810,42 @@ footer {
 
 .dd-input-wrapper input:focus {
     border-color: var(--primary-color);
+}
+
+/* Autocomplete list */
+.autocomplete-items {
+    position: absolute;
+    z-index: 99;
+    top: calc(100% - 15px);
+    left: 15px;
+    right: 55px; /* Leaves space for the confirm button */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: none;
+}
+.autocomplete-items.active {
+    display: block;
+}
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+.autocomplete-items div:last-child {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+}
+.autocomplete-items div:hover {
+    background-color: var(--bg-light);
+    color: var(--primary-color);
 }
 
 /* --- MEDIA QUERY PER INCOLONNARE I PULSANTI --- */

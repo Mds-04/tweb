@@ -107,6 +107,26 @@ class PublicController extends Controller
         return view('search_results', compact('eventi'));
     }
 
+    public function locations(Request $request)
+    {
+        $term = $request->input('q', '');
+        
+        $query = Event::query();
+        if ($term) {
+            $query->where('citta', 'like', '%' . $term . '%');
+        }
+        
+        // Fetch distinct cities that are not null or empty
+        $citta = $query->select('citta')
+                       ->whereNotNull('citta')
+                       ->where('citta', '!=', '')
+                       ->distinct()
+                       ->orderBy('citta', 'asc')
+                       ->pluck('citta');
+                       
+        return response()->json($citta);
+    }
+
     public function show(int $id)
     {
         $evento = Event::with('organizzatore')->findOrFail($id);

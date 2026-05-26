@@ -18,6 +18,9 @@ Route::get('/search', [\App\Http\Controllers\PublicController::class, 'search'])
 
 Route::get('/evento/{id}', [\App\Http\Controllers\PublicController::class, 'show'])->name('evento.show');
 
+// Rotta per fetch delle città (autocomplete)
+Route::get('/api/locations', [\App\Http\Controllers\PublicController::class, 'locations'])->name('api.locations');
+
 // Rotta per il Profilo (protetta da middleware auth)
 Route::middleware('auth')->get('/profilo', function () {
     return view('profile');
