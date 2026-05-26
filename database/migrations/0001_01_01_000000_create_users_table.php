@@ -22,7 +22,6 @@ return new class extends Migration {
             $table->date('data_nascita')->nullable();
             $table->string('organizzazione')->nullable();
             $table->string('telefono')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
 
