@@ -31,10 +31,14 @@ class ProfileController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'cognome' => 'required|string|max:255',
-            'data_nascita' => 'nullable|date',
+            'data_nascita' => 'nullable|date_format:Y-m-d|before:today|after:1900-01-01',
             'username' => 'nullable|string|max:255|unique:users,username,' . $user->id,
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|confirmed',
+        ], [
+            'data_nascita.date_format' => 'Il formato della data non è valido.',
+            'data_nascita.before' => 'La data di nascita deve essere nel passato.',
+            'data_nascita.after' => 'La data di nascita inserita non è valida.',
         ]);
 
         $user->nome = $request->nome;

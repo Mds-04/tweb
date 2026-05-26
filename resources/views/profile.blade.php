@@ -207,7 +207,7 @@
                                 style="color: #666; font-size: 14px; text-transform: uppercase;">Data di
                                 Nascita</label>
                             <input type="date" name="data_nascita" id="data_nascita"
-                                value="{{ old('data_nascita', Auth::user()->data_nascita) }}"
+                                value="{{ $errors->has('data_nascita') ? Auth::user()->data_nascita : old('data_nascita', Auth::user()->data_nascita) }}"
                                 style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                         </div>
                     </div>

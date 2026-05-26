@@ -52,11 +52,11 @@
 
         <h2 style="margin-bottom: 15px;">Crea un account</h2>
 
-        @if ($errors->any())
+        @if ($errors->register->any())
             <div
                 style="background-color: #ffeaea; color: #cc0000; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-size: 14px;">
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    @foreach (array_unique($errors->all()) as $error)
+                    @foreach (array_unique($errors->register->all()) as $error)
                         <li><i class="fa-solid fa-triangle-exclamation"></i> {{ $error }}</li>
                     @endforeach
                 </ul>
@@ -131,7 +131,7 @@
     </div>
 </div>
 
-@if ($errors->any())
+@if ($errors->register->any())
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Riapre il modal in caso di errore

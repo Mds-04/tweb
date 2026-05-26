@@ -30,13 +30,13 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $request->validateWithBag('register', [
             'nome' => 'required|string|max:255',
             'cognome' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
-            'data_nascita' => 'nullable|date',
+            'data_nascita' => 'nullable|date_format:Y-m-d|before:today|after:1900-01-01',
         ], [
             'nome.required' => 'Il nome è obbligatorio.',
             'cognome.required' => 'Il cognome è obbligatorio.',
@@ -45,6 +45,9 @@ class RegisteredUserController extends Controller
             'email.unique' => 'L\'utente risulta già registrato nel sistema.',
             'password.required' => 'La password è obbligatoria.',
             'password.min' => 'La password deve contenere almeno 6 caratteri.',
+            'data_nascita.date_format' => 'Il formato della data non è valido.',
+            'data_nascita.before' => 'La data di nascita deve essere nel passato.',
+            'data_nascita.after' => 'La data di nascita inserita non è valida.',
         ]);
 
         $user = User::create([

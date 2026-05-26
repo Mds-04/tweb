@@ -18,10 +18,15 @@
 
         <h2>Accedi al tuo account</h2>
 
-        @if ($errors->has('login_error'))
+        @if ($errors->login->any())
             <div
                 style="background-color: #ffeaea; color: #cc0000; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-size: 14px;">
-                <i class="fa-solid fa-triangle-exclamation"></i> {{ $errors->first('login_error') }}
+                <i class="fa-solid fa-triangle-exclamation"></i> 
+                @if ($errors->login->has('login_error'))
+                    {{ $errors->login->first('login_error') }}
+                @else
+                    {{ $errors->login->first() }}
+                @endif
             </div>
         @endif
 
@@ -53,7 +58,7 @@
     </div>
 </div>
 
-@if ($errors->has('login_error'))
+@if ($errors->login->any())
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('modal-login').classList.add('active');
