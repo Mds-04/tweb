@@ -111,7 +111,9 @@
 
         .btn-partecipero:hover,
         .btn-partecipero.active {
-            background-color: var(--primary-color);
+            background-color: grey;
+            border-color: #555;
+            cursor: initial;
             color: white;
             transform: scale(1.05);
         }
@@ -220,7 +222,7 @@
                             <form action="{{ route('evento.partecipa', $evento->id) }}" method="POST">
                                 @csrf
                                 @if (Auth::user()->partecipazioni()->where('evento_id', $evento->id)->exists())
-                                    <button type="submit" class="btn-partecipero active">
+                                    <button type="submit" class="btn-partecipero active" disabled>
                                         Partecipi <i class="fa-solid fa-check" style="margin-left: 5px;"></i>
                                     </button>
                                 @else
