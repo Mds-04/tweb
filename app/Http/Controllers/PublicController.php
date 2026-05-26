@@ -68,7 +68,7 @@ class PublicController extends Controller
         return view('events.convegni', compact('eventi'));
     }
 
-    private function filterEvents($categoria, Request $request)
+    private function filterEvents(string $categoria, Request $request)
     {
         $query = Event::where('categoria', $categoria);
         if ($request->filled('search')) {
@@ -95,7 +95,8 @@ class PublicController extends Controller
                     return $query->where('descrizione', 'like', $pattern);
                 } else {
                     return $query->where(function ($r) use ($q) {
-                        $r->where('descrizione', 'LIKE', $q . ' %')                                    ->orWhere('descrizione', 'LIKE', '% ' . $q . ' %')
+                        $r->where('descrizione', 'LIKE', $q . ' %')
+                          ->orWhere('descrizione', 'LIKE', '% ' . $q . ' %')
                           ->orWhere('descrizione', 'LIKE', '% ' . $q)
                           ->orWhere('descrizione', '=', $q);
                     });
@@ -106,14 +107,15 @@ class PublicController extends Controller
         return view('search_results', compact('eventi'));
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $evento = Event::with('organizzatore')->findOrFail($id);
         return view('events.show', compact('evento'));
     }
 
-    public function toggleParticipation($id)
+    public function toggleParticipation(int $id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         if ($user->livello != 2) {
             return redirect()->back();
