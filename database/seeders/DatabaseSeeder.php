@@ -13,18 +13,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Creazione Admin
-        User::create([
-            'nome' => 'Admin',
-            'cognome' => 'Sistema',
-            'email' => 'admin@eventticket.it',
-            'username' => 'admin',
-            'password' => \Illuminate\Support\Facades\Hash::make('admin'),
-            'livello' => 4, // 4 = Admin
-            'data_nascita' => '1990-01-01',
-        ]);
+        // Utenti di Test
+        $testUsers = [
+            [
+                'username' => 'clieclie',
+                'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
+                'livello' => 2,
+                'nome' => 'Cliente',
+                'cognome' => 'Test',
+                'email' => 'clieclie@example.com',
+                'data_nascita' => '1990-01-01',
+            ],
+            [
+                'username' => 'orgaorga',
+                'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
+                'livello' => 3,
+                'nome' => 'Organizzatore',
+                'cognome' => 'Test',
+                'email' => 'orgaorga@example.com',
+                'data_nascita' => '1990-01-01',
+            ],
+            [
+                'username' => 'adminadmin',
+                'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
+                'livello' => 4,
+                'nome' => 'Amministratore',
+                'cognome' => 'Test',
+                'email' => 'adminadmin@example.com',
+                'data_nascita' => '1990-01-01',
+            ]
+        ];
 
-        // 2. Creazione Organizzatore
         $organizer = User::create([
             'nome' => 'Mario',
             'cognome' => 'Rossi',
@@ -37,7 +56,6 @@ class DatabaseSeeder extends Seeder
             'data_nascita' => '1985-05-15',
         ]);
 
-        // 3. Creazione Cliente
         $cliente = User::create([
             'nome' => 'Luca',
             'cognome' => 'Bianchi',
@@ -49,7 +67,7 @@ class DatabaseSeeder extends Seeder
             'data_nascita' => '1995-10-20',
         ]);
 
-        // 4. Creazione Evento di prova per l'organizzatore
+        // Creazione Evento di prova per l'organizzatore
         \App\Models\Event::create([
             'organizzatore_id' => $organizer->id,
             'titolo' => 'Concerto di Primavera',
@@ -69,7 +87,7 @@ class DatabaseSeeder extends Seeder
         // Inizializza Faker
         $faker = \Faker\Factory::create('it_IT');
 
-        // 5. Creazione 10 Clienti casuali
+        // Creazione 10 Clienti casuali
         for ($i = 0; $i < 10; $i++) {
             User::create([
                 'nome' => $faker->firstName,
@@ -83,7 +101,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // 6. Creazione 10 Organizzazioni casuali
+        // Creazione 10 Organizzazioni casuali
         $organizerIds = [$organizer->id]; // includiamo anche l'organizzatore principale
         for ($i = 0; $i < 10; $i++) {
             $org = User::create([
@@ -100,7 +118,7 @@ class DatabaseSeeder extends Seeder
             $organizerIds[] = $org->id;
         }
 
-        // 7. Creazione 10 Eventi per ciascuna Categoria (50 in totale)
+        // Creazione 10 Eventi per ciascuna Categoria (50 in totale)
         $categorie = ['Eventi Musicali', 'Eventi Teatrali', 'Manifestazioni Letterarie', 'Mostre', 'Convegni'];
 
         foreach ($categorie as $categoria) {
