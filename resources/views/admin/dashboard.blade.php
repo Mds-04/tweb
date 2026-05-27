@@ -319,7 +319,7 @@
             if (org) {
                 // Modalità Modifica
                 title.innerText = 'Modifica Organizzatore';
-                form.action = `/admin/organizzatori/${org.id}`;
+                form.action = `{{ url('/admin/organizzatori') }}/${org.id}`;
                 methodInput.value = 'PUT';
 
                 pwdInfo.innerText = '(Lascia vuoto per non cambiarla)';

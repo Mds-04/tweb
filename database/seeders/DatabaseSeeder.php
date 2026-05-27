@@ -13,58 +13,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Utenti di Test
-        $testUsers = [
-            [
-                'username' => 'clieclie',
-                'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
-                'livello' => 2,
-                'nome' => 'Cliente',
-                'cognome' => 'Test',
-                'email' => 'clieclie@example.com',
-                'data_nascita' => '1990-01-01',
-            ],
-            [
-                'username' => 'orgaorga',
-                'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
-                'livello' => 3,
-                'nome' => 'Organizzatore',
-                'cognome' => 'Test',
-                'email' => 'orgaorga@example.com',
-                'data_nascita' => '1990-01-01',
-            ],
-            [
-                'username' => 'adminadmin',
-                'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
-                'livello' => 4,
-                'nome' => 'Amministratore',
-                'cognome' => 'Test',
-                'email' => 'adminadmin@example.com',
-                'data_nascita' => '1990-01-01',
-            ]
-        ];
+        // 1. Creazione Admin
+        User::create([
+            'nome' => 'Amministratore',
+            'cognome' => 'Test',
+            'email' => 'adminadmin@example.com',
+            'username' => 'adminadmin',
+            'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
+            'livello' => 4, // 4 = Admin
+            'data_nascita' => '1990-01-01',
+        ]);
 
+        // 2. Creazione Organizzatore
         $organizer = User::create([
-            'nome' => 'Mario',
-            'cognome' => 'Rossi',
-            'email' => 'organizzatore@eventticket.it',
-            'username' => 'organizzatore',
-            'password' => \Illuminate\Support\Facades\Hash::make('organizzatore'),
+            'nome' => 'Organizzatore',
+            'cognome' => 'Test',
+            'email' => 'orgaorga@example.com',
+            'username' => 'orgaorga',
+            'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
             'livello' => 3, // 3 = Organizzatore
             'organizzazione' => 'LiveNation Italia',
             'telefono' => '3331234567',
-            'data_nascita' => '1985-05-15',
+            'data_nascita' => '1990-01-01',
         ]);
 
+        // 3. Creazione Cliente
         $cliente = User::create([
-            'nome' => 'Luca',
-            'cognome' => 'Bianchi',
-            'email' => 'cliente@gmail.com',
-            'username' => 'cliente',
-            'password' => \Illuminate\Support\Facades\Hash::make('cliente'),
+            'nome' => 'Cliente',
+            'cognome' => 'Test',
+            'email' => 'clieclie@example.com',
+            'username' => 'clieclie',
+            'password' => \Illuminate\Support\Facades\Hash::make('rAh2rAh2'),
             'livello' => 2, // 2 = Cliente
             'telefono' => '3409876543',
-            'data_nascita' => '1995-10-20',
+            'data_nascita' => '1990-01-01',
         ]);
 
         // Creazione Evento di prova per l'organizzatore

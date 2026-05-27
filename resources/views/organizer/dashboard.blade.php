@@ -415,7 +415,7 @@
             if (evento) {
                 // Modalità Modifica
                 title.innerText = 'Modifica Evento';
-                form.action = `/organizer/events/${evento.id}`;
+                form.action = `{{ url('/organizer/events') }}/${evento.id}`;
                 methodInput.value = 'PUT';
 
                 btnTotalTickets.style.display = 'none';
