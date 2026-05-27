@@ -18,7 +18,13 @@
         <div class="logo-container" style="flex-direction: column; gap: 20px;">
             <span id="event-name">Risultati della Ricerca</span>
             <div class="result-founded">
-                {{ count($eventi) }} risultati trovati per "{{ request('q') }}"
+                {{ count($eventi) }} risultati trovati
+                @if(request('q'))
+                    per "{{ request('q') }}"
+                @endif
+                @if(request('luogo'))
+                    a "{{ request('luogo') }}"
+                @endif
             </div>
         </div>
     </section>

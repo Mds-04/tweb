@@ -198,10 +198,7 @@ $(document).ready(function() {
                             $div.on('click', function() {
                                 const selectedVal = $(this).find('input').val();
                                 $inputCitta.val(selectedVal);
-                                $('#dd-luogo .dd-selected').text(selectedVal);
-                                $('#hidden-luogo').val(selectedVal);
                                 $autocompleteList.empty().removeClass('active');
-                                $('#dd-luogo').removeClass('active');
                             });
                             
                             $autocompleteList.append($div);
@@ -227,15 +224,7 @@ $(document).ready(function() {
         });
     }
 
-    $('#btn-conferma-citta').on('click', function() {
-        const val = $('#input-citta').val().trim();
-        if (val !== "") {
-            $('#dd-luogo .dd-selected').text(val);
-            $('#hidden-luogo').val(val);
-            $('#dd-luogo').removeClass('active');
-            $('#input-citta').val("");
-        }
-    });
+
 
     // --- GESTIONE MODAL CALENDARIO ---
     $('#apri-calendario').on('click', function() {

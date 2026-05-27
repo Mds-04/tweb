@@ -61,18 +61,29 @@ body {
 
 .search-bar {
     flex-grow: 1;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 20px;
     position: relative;
+    display: flex;
 }
 
 .search-bar input {
-    width: 100%;
-    padding: 10px 40px 10px 20px;
-    border-radius: 25px;
+    width: 50%;
+    padding: 10px 15px;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
     outline: none;
+    font-size: 14px;
+}
+
+.search-bar input:first-child {
+    border-radius: 25px 0 0 25px;
+    border-right: none;
+}
+
+.search-bar input:nth-child(2) {
+    border-radius: 0 25px 25px 0;
+    padding-right: 40px;
 }
 
 .search-bar i {
@@ -816,9 +827,9 @@ footer {
 .autocomplete-items {
     position: absolute;
     z-index: 99;
-    top: calc(100% - 15px);
-    left: 15px;
-    right: 55px; /* Leaves space for the confirm button */
+    top: 100%;
+    left: 50%;
+    right: 0;
     background-color: #fff;
     border: 1px solid #ccc;
     border-top: none;

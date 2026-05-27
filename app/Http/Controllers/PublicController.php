@@ -38,34 +38,24 @@ class PublicController extends Controller
         return view('index', compact('prossimiEventi', 'eventiPerCategoria'));
     }
 
-    public function musicali(Request $request)
+    public function category($slug, Request $request)
     {
-        $eventi = $this->filterEvents('Eventi Musicali', $request);
-        return view('events.eventiMusicali', compact('eventi'));
-    }
+        $map = [
+            'musicali' => 'Eventi Musicali',
+            'teatrali' => 'Eventi Teatrali',
+            'letterarie' => 'Manifestazioni Letterarie',
+            'mostre' => 'Mostre',
+            'convegni' => 'Convegni'
+        ];
 
-    public function teatrali(Request $request)
-    {
-        $eventi = $this->filterEvents('Eventi Teatrali', $request);
-        return view('events.eventiTeatrali', compact('eventi'));
-    }
+        if (!array_key_exists($slug, $map)) {
+            abort(404);
+        }
 
-    public function letterarie(Request $request)
-    {
-        $eventi = $this->filterEvents('Manifestazioni Letterarie', $request);
-        return view('events.manifestazioniLetterarie', compact('eventi'));
-    }
-
-    public function mostre(Request $request)
-    {
-        $eventi = $this->filterEvents('Mostre', $request);
-        return view('events.mostre', compact('eventi'));
-    }
-
-    public function convegni(Request $request)
-    {
-        $eventi = $this->filterEvents('Convegni', $request);
-        return view('events.convegni', compact('eventi'));
+        $categoria = $map[$slug];
+        $eventi = $this->filterEvents($categoria, $request);
+        
+        return view('events.category', compact('eventi', 'categoria', 'slug'));
     }
 
     private function filterEvents(string $categoria, Request $request)
@@ -90,9 +80,12 @@ class PublicController extends Controller
                 $q = trim($q);
                 if (str_ends_with($q, '*')) {
                     $cleanTerm = rtrim($q, '*');
-                    $pattern = '%' . $cleanTerm . '%';
-
-                    return $query->where('descrizione', 'like', $pattern);
+                    
+                    // Match if description starts with term OR contains a space followed by term
+                    return $query->where(function ($r) use ($cleanTerm) {
+                        $r->where('descrizione', 'LIKE', $cleanTerm . '%')
+                          ->orWhere('descrizione', 'LIKE', '% ' . $cleanTerm . '%');
+                    });
                 } else {
                     return $query->where(function ($r) use ($q) {
                         $r->where('descrizione', 'LIKE', $q . ' %')
@@ -101,6 +94,10 @@ class PublicController extends Controller
                           ->orWhere('descrizione', '=', $q);
                     });
                 }
+            })
+            ->when($request->luogo, function ($query, $luogo) {
+                // Filtro per città (AND logico essendo incatenato al query builder)
+                return $query->where('citta', 'like', '%' . $luogo . '%');
             })
             ->orderBy('data')
             ->get();

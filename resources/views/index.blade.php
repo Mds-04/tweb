@@ -79,7 +79,7 @@
         <!-- EVENTI MUSICALI -->
         <div class="standard-header">
             <h2 id="eventi-musicali">Eventi musicali</h2>
-            <a href="{{ route('eventi.musicali') }}" class="vedi-tutto">Vedi tutto ></a>
+            <a href="{{ route('eventi.categoria', ['slug' => 'musicali']) }}" class="vedi-tutto">Vedi tutto ></a>
         </div>
         <div class="carousel-container">
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i
@@ -110,7 +110,7 @@
         <!-- EVENTI TEATRALI -->
         <div class="standard-header">
             <h2 id="eventi-teatrali">Eventi teatrali</h2>
-            <a href="{{ route('eventi.teatrali') }}" class="vedi-tutto">Vedi tutto ></a>
+            <a href="{{ route('eventi.categoria', ['slug' => 'teatrali']) }}" class="vedi-tutto">Vedi tutto ></a>
         </div>
         <div class="carousel-container">
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i
@@ -141,7 +141,7 @@
         <!-- MANIFESTAZIONI LETTERARIE -->
         <div class="standard-header">
             <h2 id="manifestazioni-letterarie">Manifestazioni letterarie</h2>
-            <a href="{{ route('eventi.letterarie') }}" class="vedi-tutto">Vedi tutto ></a>
+            <a href="{{ route('eventi.categoria', ['slug' => 'letterarie']) }}" class="vedi-tutto">Vedi tutto ></a>
         </div>
         <div class="carousel-container">
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i
@@ -173,7 +173,7 @@
         <!-- MOSTRE -->
         <div class="standard-header">
             <h2 id="mostre">Mostre</h2>
-            <a href="{{ route('eventi.mostre') }}" class="vedi-tutto">Vedi tutto ></a>
+            <a href="{{ route('eventi.categoria', ['slug' => 'mostre']) }}" class="vedi-tutto">Vedi tutto ></a>
         </div>
         <div class="carousel-container">
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i
@@ -205,7 +205,7 @@
         <!-- CONVEGNI -->
         <div class="standard-header">
             <h2 id="convegni">Convegni</h2>
-            <a href="{{ route('eventi.convegni') }}" class="vedi-tutto">Vedi tutto ></a>
+            <a href="{{ route('eventi.categoria', ['slug' => 'convegni']) }}" class="vedi-tutto">Vedi tutto ></a>
         </div>
         <div class="carousel-container">
             <button class="carousel-btn prev" onclick="scrollCarousel(this, -200)"><i

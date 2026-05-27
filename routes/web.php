@@ -9,11 +9,7 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/eventi/musicali', [\App\Http\Controllers\PublicController::class, 'musicali'])->name('eventi.musicali');
-Route::get('/eventi/teatrali', [\App\Http\Controllers\PublicController::class, 'teatrali'])->name('eventi.teatrali');
-Route::get('/eventi/letterarie', [\App\Http\Controllers\PublicController::class, 'letterarie'])->name('eventi.letterarie');
-Route::get('/eventi/mostre', [\App\Http\Controllers\PublicController::class, 'mostre'])->name('eventi.mostre');
-Route::get('/eventi/convegni', [\App\Http\Controllers\PublicController::class, 'convegni'])->name('eventi.convegni');
+Route::get('/eventi/{slug}', [\App\Http\Controllers\PublicController::class, 'category'])->name('eventi.categoria');
 Route::get('/search', [\App\Http\Controllers\PublicController::class, 'search'])->name('search');
 
 Route::get('/evento/{id}', [\App\Http\Controllers\PublicController::class, 'show'])->name('evento.show');

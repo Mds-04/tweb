@@ -7,7 +7,9 @@
     <form action="{{ route('search') }}" method="GET" style="display: contents;">
         <div class="search-bar">
             <input type="text" name="q" value="{{ request('q') }}"
-                placeholder="Ricerca evento con parole chiave">
+                placeholder="Cosa cerchi?">
+            <input type="text" name="luogo" id="input-citta" value="{{ request('luogo') }}"
+                placeholder="Dove? (es. Roma)" autocomplete="off">
             <button type="submit"
                 style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; outline: none;">
                 <i class="fa-solid fa-search" style="color: #888; font-size: 16px;"></i>
