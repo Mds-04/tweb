@@ -1,416 +1,277 @@
 // --- 1. PULSANTE SCROLL TO TOP ---
-const scrollBtn = document.getElementById("scrollToTopBtn");
-
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    $('html, body').animate({
+        scrollTop: 0
+    }, 500);
 }
 
 // --- 2. GESTIONE CAROSELLI (Manuale, Automatico, Hover, Frecce) ---
-
-// Funzione per i click manuali sulle frecce
-function scrollCarousel(button, amount) {
-    const track = button.parentElement.querySelector('.carousel-track');
-    track.scrollBy({
+// Funzione per i click manuali sulle frecce (chiamata da HTML inline)
+window.scrollCarousel = function(button, amount) {
+    $(button).parent().find('.carousel-track')[0].scrollBy({
         left: amount,
         behavior: 'smooth'
     });
 }
 
-// Selezioniamo tutti i caroselli della pagina
-const carousels = document.querySelectorAll('.carousel-container');
-
-carousels.forEach(container => {
-    const track = container.querySelector('.carousel-track');
-    const prevBtn = container.querySelector('.carousel-btn.prev');
-    const nextBtn = container.querySelector('.carousel-btn.next');
+$(document).ready(function() {
     
-    let scrollInterval;
-    let direction = 1; // 1 significa scorrimento verso destra, -1 verso sinistra
+    const $scrollBtn = $("#scrollToTopBtn");
 
-    // Controlliamo che le frecce esistano nel DOM per evitare errori
-    if (!prevBtn || !nextBtn) return;
+    // --- 3. GESTIONE SCROLL GENERALE (ScrollToTop & Sticky Navbar) ---
+    const $secondNavbar = $('.sticky-navbar');
+    const $standardSection = $('.standard-section');
 
-    // Funzione che gestisce la visibilità delle frecce e inverte la marcia
-    function updateCarouselState() {
-        // Controllo estremità SINISTRA
-        if (track.scrollLeft <= 1) {
-            prevBtn.style.display = 'none';
-            direction = 1; // Inverte la marcia verso destra
+    $(window).on('scroll', function() {
+        // Gestione comparsa pulsante Scroll To Top
+        if ($(this).scrollTop() > 300) {
+            $scrollBtn.fadeIn(200);
         } else {
-            prevBtn.style.display = 'flex';
+            $scrollBtn.fadeOut(200);
         }
 
-        // Controllo estremità DESTRA
-        const isAtEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
-        if (isAtEnd) {
-            nextBtn.style.display = 'none';
-            direction = -1; // Inverte la marcia verso sinistra
-        } else {
-            nextBtn.style.display = 'flex';
+        // Gestione comparsa Seconda Navbar
+        if ($standardSection.length) {
+            const triggerPoint = $standardSection.offset().top - 100;
+            if ($(window).scrollTop() > triggerPoint) {
+                $secondNavbar.addClass('is-visible');
+            } else {
+                $secondNavbar.removeClass('is-visible');
+            }
         }
-    }
+    });
 
-    // Aggiorniamo le frecce ogni volta che il carosello scorre (manualmente o automaticamente)
-    track.addEventListener('scroll', updateCarouselState);
-
-    // Eseguiamo un primo controllo all'avvio (con un piccolo ritardo per caricare il CSS)
-    setTimeout(updateCarouselState, 100);
-
-    // Funzione per avviare lo scorrimento automatico indipendente
-    function startScroll() {
-        clearInterval(scrollInterval); // Evita timer multipli
+    // Inizializzazione logica Caroselli
+    $('.carousel-container').each(function() {
+        const $container = $(this);
+        const $track = $container.find('.carousel-track');
+        const $prevBtn = $container.find('.carousel-btn.prev');
+        const $nextBtn = $container.find('.carousel-btn.next');
         
-        scrollInterval = setInterval(() => {
-            // Moltiplichiamo i 200px per la 'direction' (+1 o -1) per andare a destra o sinistra
-            track.scrollBy({ left: 200 * direction, behavior: 'smooth' });
-        }, 4000); // Scorre ogni 2 secondi
-    }
+        let scrollInterval;
+        let direction = 1; // 1 = destra, -1 = sinistra
 
-    // Funzione per fermare lo scorrimento
-    function stopScroll() {
-        clearInterval(scrollInterval);
-    }
+        if (!$prevBtn.length || !$nextBtn.length) return;
 
-    // Avvia l'autoplay
-    startScroll();
+        function updateCarouselState() {
+            if ($track.scrollLeft() <= 1) {
+                $prevBtn.hide();
+                direction = 1;
+            } else {
+                $prevBtn.css('display', 'flex');
+            }
 
-    // Mette in pausa al passaggio del mouse
-    container.addEventListener('mouseenter', stopScroll);
-    container.addEventListener('mouseleave', startScroll);
-});
-
-
-// --- 3. GESTIONE SCROLL GENERALE (ScrollToTop & Sticky Navbar) ---
-const secondNavbar = document.querySelector('.sticky-navbar');
-const standardSection = document.querySelector('.standard-section');
-
-window.onscroll = function() {
-    // Gestione comparsa pulsante Scroll To Top
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        scrollBtn.style.display = "block";
-    } else {
-        scrollBtn.style.display = "none";
-    }
-
-    // Gestione comparsa Seconda Navbar
-    if (standardSection) {
-        // Appare appena la cima della sezione standard raggiunge la parte superiore della finestra
-        // (o poco prima, es. offsetTop - altezza della navbar principale)
-        const triggerPoint = standardSection.offsetTop - 100; // Regolabile se necessario
-        if (window.scrollY > triggerPoint) {
-            secondNavbar.classList.add('is-visible');
-        } else {
-            secondNavbar.classList.remove('is-visible');
+            const isAtEnd = $track.scrollLeft() + $track.innerWidth() >= $track[0].scrollWidth - 1;
+            if (isAtEnd) {
+                $nextBtn.hide();
+                direction = -1;
+            } else {
+                $nextBtn.css('display', 'flex');
+            }
         }
-    }
-};
 
-// --- 4. GESTIONE MODAL LOGIN ---
-// Seleziono TUTTI i pulsanti con la classe 'btn-apri-login' (ne hai due: top nav e sticky nav)
-const btnsApriLogin = document.querySelectorAll('.btn-apri-login');
-const modalLogin = document.getElementById('modal-login');
-const btnChiudiLogin = document.getElementById('btn-chiudi-login');
+        $track.on('scroll', updateCarouselState);
+        setTimeout(updateCarouselState, 100);
 
-// Aggiungo l'evento click a ciascun bottone "Accedi"
-btnsApriLogin.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault(); // Evita strani salti della pagina
-        modalLogin.classList.add('active');
-    });
-});
-
-// Chiudi il modal cliccando sulla X
-if(btnChiudiLogin) {
-    btnChiudiLogin.addEventListener('click', () => {
-        modalLogin.classList.remove('active');
-    });
-}
-
-// Chiudi il modal cliccando fuori dal riquadro bianco
-if(modalLogin) {
-    modalLogin.addEventListener('click', (event) => {
-        if (event.target === modalLogin) {
-            modalLogin.classList.remove('active');
+        function startScroll() {
+            clearInterval(scrollInterval);
+            scrollInterval = setInterval(() => {
+                $track[0].scrollBy({ left: 200 * direction, behavior: 'smooth' });
+            }, 4000);
         }
+
+        function stopScroll() {
+            clearInterval(scrollInterval);
+        }
+
+        startScroll();
+
+        $container.on('mouseenter', stopScroll);
+        $container.on('mouseleave', startScroll);
     });
-}
 
-// Funzione per mostrare/nascondere la password
-const togglePasswordIcon = document.getElementById('toggle-password');
-const inputPasswordBox = document.getElementById('password');
-
-if(togglePasswordIcon && inputPasswordBox) {
-    togglePasswordIcon.addEventListener('click', function () {
-        const type = inputPasswordBox.getAttribute('type') === 'password' ? 'text' : 'password';
-        inputPasswordBox.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-        this.classList.toggle('fa-eye');
-    });
-}
-
-// --- 5. GESTIONE MODAL REGISTER ---
-const modalRegister = document.getElementById('modal-register');
-const btnChiudiRegister = document.getElementById('btn-chiudi-register');
-const linkApriRegister = document.getElementById('link-apri-register');
-const linkTornaLogin = document.getElementById('link-torna-login');
-
-// Apri Register dalla modale Login
-if(linkApriRegister) {
-    linkApriRegister.addEventListener('click', (e) => {
+    // --- 4. GESTIONE MODAL LOGIN ---
+    $('.btn-apri-login').on('click', function(e) {
         e.preventDefault();
-        modalLogin.classList.remove('active'); // Chiudo il login
-        modalRegister.classList.add('active'); // Apro il register
+        $('#modal-login').addClass('active');
     });
-}
 
-// Torna al Login dalla modale Register
-if(linkTornaLogin) {
-    linkTornaLogin.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalRegister.classList.remove('active'); // Chiudo il register
-        modalLogin.classList.add('active'); // Riapro il login
-    });
-}
-
-// Chiudi Register (cliccando la X)
-if(btnChiudiRegister) {
-    btnChiudiRegister.addEventListener('click', () => {
-        modalRegister.classList.remove('active');
-    });
-}
-
-// Chiudi Register cliccando fuori dallo sfondo scuro
-if(modalRegister) {
-    modalRegister.addEventListener('click', (event) => {
-        if (event.target === modalRegister) {
-            modalRegister.classList.remove('active');
+    $('#btn-chiudi-login, #modal-login').on('click', function(e) {
+        if (e.target === this) {
+            $('#modal-login').removeClass('active');
         }
     });
-}
 
-// Funzione per mostrare/nascondere la password nella registrazione
-const toggleRegPasswordIcon = document.getElementById('toggle-reg-password');
-const inputRegPasswordBox = document.getElementById('reg-password');
-
-if(toggleRegPasswordIcon && inputRegPasswordBox) {
-    toggleRegPasswordIcon.addEventListener('click', function () {
-        const type = inputRegPasswordBox.getAttribute('type') === 'password' ? 'text' : 'password';
-        inputRegPasswordBox.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-        this.classList.toggle('fa-eye');
+    $('#toggle-password').on('click', function() {
+        const $input = $('#password');
+        const type = $input.attr('type') === 'password' ? 'text' : 'password';
+        $input.attr('type', type);
+        $(this).toggleClass('fa-eye-slash fa-eye');
     });
-}
 
-// --- 6. GESTIONE CUSTOM DROPDOWNS (Filtri Ricerca) ---
-const dropdowns = document.querySelectorAll('.custom-dropdown');
+    // --- 5. GESTIONE MODAL REGISTER ---
+    $('#link-apri-register').on('click', function(e) {
+        e.preventDefault();
+        $('#modal-login').removeClass('active');
+        $('#modal-register').addClass('active');
+    });
 
-dropdowns.forEach(dropdown => {
-    const toggleBtn = dropdown.querySelector('.dropdown-toggle');
-    const items = dropdown.querySelectorAll('.dd-item');
-    const selectedText = dropdown.querySelector('.dd-selected');
+    $('#link-torna-login').on('click', function(e) {
+        e.preventDefault();
+        $('#modal-register').removeClass('active');
+        $('#modal-login').addClass('active');
+    });
 
-    // Apri/Chiudi il dropdown cliccando sul bottone
-    if(toggleBtn) {
-        toggleBtn.addEventListener('click', (e) => {
-            // Chiudi tutti gli altri dropdown prima di aprire questo
-            dropdowns.forEach(dd => {
-                if(dd !== dropdown) dd.classList.remove('active');
-            });
-            dropdown.classList.toggle('active');
-        });
-    }
+    $('#btn-chiudi-register, #modal-register').on('click', function(e) {
+        if (e.target === this) {
+            $('#modal-register').removeClass('active');
+        }
+    });
 
-    // Seleziona un'opzione standard
-    items.forEach(item => {
-        item.addEventListener('click', () => {
-            // Se non è il tasto "Seleziona date..." (che apre il modal)
-            if(item.id !== 'apri-calendario') {
-                selectedText.innerText = item.innerText;
-                const hiddenInput = dropdown.querySelector('input[type="hidden"]');
-                if (hiddenInput) {
-                    hiddenInput.value = item.innerText === 'Tutta Italia' ? '' : item.innerText;
+    $('#toggle-reg-password').on('click', function() {
+        const $input = $('#reg-password');
+        const type = $input.attr('type') === 'password' ? 'text' : 'password';
+        $input.attr('type', type);
+        $(this).toggleClass('fa-eye-slash fa-eye');
+    });
+
+    // --- 6. GESTIONE CUSTOM DROPDOWNS (Filtri Ricerca) ---
+    $('.dropdown-toggle').on('click', function(e) {
+        e.stopPropagation();
+        const $dropdown = $(this).closest('.custom-dropdown');
+        $('.custom-dropdown').not($dropdown).removeClass('active');
+        $dropdown.toggleClass('active');
+    });
+
+    $('.dd-item').on('click', function() {
+        if (this.id !== 'apri-calendario') {
+            const $dropdown = $(this).closest('.custom-dropdown');
+            const text = $(this).text();
+            $dropdown.find('.dd-selected').text(text);
+            const $hiddenInput = $dropdown.find('input[type="hidden"]');
+            if ($hiddenInput.length) {
+                $hiddenInput.val(text === 'Tutta Italia' ? '' : text);
+            }
+            $dropdown.removeClass('active');
+        }
+    });
+
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.custom-dropdown').length) {
+            $('.custom-dropdown').removeClass('active');
+        }
+    });
+
+    // --- GESTIONE INPUT LUOGO MANUALE E AUTOCOMPLETE (AJAX con jQuery) ---
+    const $inputCitta = $('#input-citta');
+    if ($inputCitta.length) {
+        const $autocompleteList = $('<div>', { id: 'autocomplete-list', class: 'autocomplete-items' });
+        $inputCitta.parent().append($autocompleteList);
+
+        function fetchAndShowLocations(val) {
+            $autocompleteList.empty();
+            $.ajax({
+                url: '/api/locations',
+                method: 'GET',
+                data: { q: val },
+                dataType: 'json',
+                success: function(data) {
+                    $autocompleteList.empty();
+                    if (data.length > 0) {
+                        $autocompleteList.addClass('active');
+                        $.each(data, function(index, item) {
+                            const $div = $('<div>');
+                            
+                            if (val) {
+                                const matchIndex = item.toLowerCase().indexOf(val.toLowerCase());
+                                if (matchIndex >= 0) {
+                                    $div.html(item.substring(0, matchIndex) + "<strong>" + item.substring(matchIndex, matchIndex + val.length) + "</strong>" + item.substring(matchIndex + val.length));
+                                } else {
+                                    $div.html(item);
+                                }
+                            } else {
+                                $div.html(item);
+                            }
+                            
+                            $div.append($('<input>', { type: 'hidden', value: item }));
+                            
+                            $div.on('click', function() {
+                                const selectedVal = $(this).find('input').val();
+                                $inputCitta.val(selectedVal);
+                                $('#dd-luogo .dd-selected').text(selectedVal);
+                                $('#hidden-luogo').val(selectedVal);
+                                $autocompleteList.empty().removeClass('active');
+                                $('#dd-luogo').removeClass('active');
+                            });
+                            
+                            $autocompleteList.append($div);
+                        });
+                    } else {
+                        $autocompleteList.removeClass('active');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Errore nel fetch delle città:", error);
                 }
-                dropdown.classList.remove('active'); // Chiudi il menu
+            });
+        }
+
+        $inputCitta.on('input focus', function() {
+            fetchAndShowLocations($(this).val());
+        });
+
+        $(document).on('click', function(e) {
+            if (e.target !== $inputCitta[0] && !$(e.target).closest('#autocomplete-list').length) {
+                $autocompleteList.empty().removeClass('active');
             }
         });
-    });
-});
-
-// Chiudi i dropdown se l'utente clicca fuori
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.custom-dropdown')) {
-        dropdowns.forEach(dd => dd.classList.remove('active'));
-    }
-});
-
-// --- GESTIONE INPUT LUOGO MANUALE ---
-const inputCitta = document.getElementById('input-citta');
-const btnConfermaCitta = document.getElementById('btn-conferma-citta');
-const selectedLuogo = document.querySelector('#dd-luogo .dd-selected');
-const dropdownLuogo = document.getElementById('dd-luogo');
-const hiddenLuogo = document.getElementById('hidden-luogo');
-
-if(inputCitta) {
-    // Creazione del contenitore per l'autocomplete
-    const autocompleteList = document.createElement('div');
-    autocompleteList.setAttribute('id', 'autocomplete-list');
-    autocompleteList.setAttribute('class', 'autocomplete-items');
-    inputCitta.parentNode.appendChild(autocompleteList);
-
-    function fetchAndShowLocations(val) {
-        autocompleteList.innerHTML = '';
-        fetch('/api/locations?q=' + encodeURIComponent(val))
-            .then(response => response.json())
-            .then(data => {
-                autocompleteList.innerHTML = '';
-                if(data.length > 0) {
-                    autocompleteList.classList.add('active');
-                    data.forEach(item => {
-                        const div = document.createElement('div');
-                        
-                        // Evidenzia la parte di testo che corrisponde alla ricerca solo se c'è un input
-                        if (val) {
-                            const matchIndex = item.toLowerCase().indexOf(val.toLowerCase());
-                            if (matchIndex >= 0) {
-                                div.innerHTML = item.substring(0, matchIndex) + "<strong>" + item.substring(matchIndex, matchIndex + val.length) + "</strong>" + item.substring(matchIndex + val.length);
-                            } else {
-                                div.innerHTML = item;
-                            }
-                        } else {
-                            div.innerHTML = item;
-                        }
-                        
-                        div.innerHTML += "<input type='hidden' value='" + item + "'>";
-                        div.addEventListener('click', function(e) {
-                            inputCitta.value = this.getElementsByTagName("input")[0].value;
-                            // Aggiorna anche il dropdown principale
-                            if (selectedLuogo) selectedLuogo.innerText = inputCitta.value;
-                            if (hiddenLuogo) hiddenLuogo.value = inputCitta.value;
-                            autocompleteList.innerHTML = '';
-                            autocompleteList.classList.remove('active');
-                            if (dropdownLuogo) dropdownLuogo.classList.remove('active');
-                        });
-                        autocompleteList.appendChild(div);
-                    });
-                } else {
-                    autocompleteList.classList.remove('active');
-                }
-            })
-            .catch(error => {
-                console.error("Errore nel fetch delle città:", error);
-            });
     }
 
-    inputCitta.addEventListener('input', function() {
-        fetchAndShowLocations(this.value);
-    });
-
-    inputCitta.addEventListener('focus', function() {
-        fetchAndShowLocations(this.value);
-    });
-
-    // Chiudi autocomplete se si clicca fuori
-    document.addEventListener('click', function (e) {
-        if (e.target !== inputCitta && e.target !== autocompleteList) {
-            autocompleteList.innerHTML = '';
-            autocompleteList.classList.remove('active');
+    $('#btn-conferma-citta').on('click', function() {
+        const val = $('#input-citta').val().trim();
+        if (val !== "") {
+            $('#dd-luogo .dd-selected').text(val);
+            $('#hidden-luogo').val(val);
+            $('#dd-luogo').removeClass('active');
+            $('#input-citta').val("");
         }
     });
-}
 
-if(btnConfermaCitta && inputCitta) {
-    btnConfermaCitta.addEventListener('click', () => {
-        if(inputCitta.value.trim() !== "") {
-            if (selectedLuogo) selectedLuogo.innerText = inputCitta.value;
-            if (hiddenLuogo) hiddenLuogo.value = inputCitta.value;
-            if (dropdownLuogo) dropdownLuogo.classList.remove('active');
-            inputCitta.value = ""; // Svuoto l'input
+    // --- GESTIONE MODAL CALENDARIO ---
+    $('#apri-calendario').on('click', function() {
+        $('#dd-quando').removeClass('active');
+        $('#modal-calendario').addClass('active');
+    });
+
+    $('#btn-chiudi-calendario, #modal-calendario').on('click', function(e) {
+        if (e.target === this) {
+            $('#modal-calendario').removeClass('active');
         }
     });
-}
 
-// --- GESTIONE MODAL CALENDARIO ---
-const modalCalendario = document.getElementById('modal-calendario');
-const btnApriCalendario = document.getElementById('apri-calendario');
-const btnChiudiCalendario = document.getElementById('btn-chiudi-calendario');
-const btnConfermaData = document.getElementById('conferma-data');
-const inputData = document.getElementById('data-scelta');
-const selectedQuando = document.querySelector('#dd-quando .dd-selected');
-const dropdownQuando = document.getElementById('dd-quando');
-
-if(btnApriCalendario) {
-    btnApriCalendario.addEventListener('click', () => {
-        dropdownQuando.classList.remove('active'); // Chiudi il dropdown
-        modalCalendario.classList.add('active'); // Apri il modal
-    });
-}
-
-if(btnChiudiCalendario) {
-    btnChiudiCalendario.addEventListener('click', () => {
-        modalCalendario.classList.remove('active');
-    });
-}
-
-// Chiudi cliccando fuori
-if(modalCalendario) {
-    modalCalendario.addEventListener('click', (e) => {
-        if (e.target === modalCalendario) modalCalendario.classList.remove('active');
-    });
-}
-
-// Conferma la data dal calendario
-if(btnConfermaData && inputData) {
-    btnConfermaData.addEventListener('click', () => {
-        if(inputData.value) {
-            // Formatta la data (opzionale, es: DD/MM/YYYY)
-            const dateObj = new Date(inputData.value);
+    $('#conferma-data').on('click', function() {
+        const dateVal = $('#data-scelta').val();
+        if (dateVal) {
+            const dateObj = new Date(dateVal);
             const formattedDate = dateObj.toLocaleDateString('it-IT');
-            
-            selectedQuando.innerText = formattedDate;
-            modalCalendario.classList.remove('active');
+            $('#dd-quando .dd-selected').text(formattedDate);
+            $('#modal-calendario').removeClass('active');
         }
     });
-}
 
-// --- 7. GESTIONE MODAL LOGOUT ---
-const modalLogout = document.getElementById('modal-logout');
-const btnApriLogout = document.getElementById('btn-apri-logout');
-const btnChiudiLogout = document.getElementById('btn-chiudi-logout');
-const btnAnnullaLogout = document.getElementById('btn-annulla-logout');
-
-// Apri il modal quando si clicca "Esci" nella sidebar
-if(btnApriLogout) {
-    btnApriLogout.addEventListener('click', (e) => {
-        e.preventDefault(); // Evita salti di pagina
-        modalLogout.classList.add('active');
+    // --- 7. GESTIONE MODAL LOGOUT ---
+    $('#btn-apri-logout').on('click', function(e) {
+        e.preventDefault();
+        $('#modal-logout').addClass('active');
     });
-}
 
-// Funzione riutilizzabile per chiudere il modal
-function chiudiModalLogout() {
-    if(modalLogout) {
-        modalLogout.classList.remove('active');
+    function chiudiModalLogout() {
+        $('#modal-logout').removeClass('active');
     }
-}
 
-// Chiudi cliccando la "X" in alto a destra
-if(btnChiudiLogout) {
-    btnChiudiLogout.addEventListener('click', chiudiModalLogout);
-}
-
-// Chiudi cliccando il pulsante grigio "Annulla"
-if(btnAnnullaLogout) {
-    btnAnnullaLogout.addEventListener('click', chiudiModalLogout);
-}
-
-// Chiudi cliccando fuori dal riquadro bianco
-if(modalLogout) {
-    modalLogout.addEventListener('click', (event) => {
-        if (event.target === modalLogout) {
+    $('#btn-chiudi-logout, #btn-annulla-logout, #modal-logout').on('click', function(e) {
+        if (e.target === this) {
             chiudiModalLogout();
         }
     });
-}
+});
