@@ -213,7 +213,7 @@ $(document).ready(function() {
             });
         }
 
-        $inputCitta.on('input focus', function() {
+        $inputCitta.on('input focus click', function() {
             fetchAndShowLocations($(this).val());
         });
 

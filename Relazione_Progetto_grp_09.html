@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<style>
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; color: #333; line-height: 1.6; }
+h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+h2 { color: #2980b9; margin-top: 30px; }
+ul { list-style-type: square; }
+.section { margin-bottom: 25px; }
+.strong { font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Documentazione Descrittiva del Progetto "EventTicket"</h1>
+
+<div class="section">
+    <h2>1. Riferimenti</h2>
+    <ul>
+        <li><span class="strong">Identificativo Gruppo:</span> grp_09</li>
+        <li><span class="strong">Componenti del Gruppo:</span>
+            <ul>
+                <li>Anselmi Michele</li>
+                <li>Baldassarri Nicola</li>
+                <li>De Simone Marco</li>
+                <li>Giarelli Gaia</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>2. Contributo</h2>
+    <ul>
+        <li><span class="strong">Anselmi Michele:</span> 25%</li>
+        <li><span class="strong">Baldassarri Nicola:</span> 25%</li>
+        <li><span class="strong">De Simone Marco:</span> 25%</li>
+        <li><span class="strong">Giarelli Gaia:</span> 25%</li>
+    </ul>
+    <p><em>(Nota: Tutti i membri hanno collaborato in maniera sinergica e bilanciata alla stesura dei requisiti, alla progettazione del database, allo sviluppo del backend in Laravel e alla realizzazione del frontend).</em></p>
+</div>
+
+<div class="section">
+    <h2>3. Descrizione del sito</h2>
+    <p><strong>EventTicket</strong> è una piattaforma web dinamica dedicata alla vendita e gestione di biglietti per diverse tipologie di eventi (Musicali, Teatrali, Mostre, Convegni e Manifestazioni Letterarie). Il sito si rivolge a tre diverse tipologie di utenti:</p>
+    <ul>
+        <li><span class="strong">Utente Pubblico / Cliente (Livello 1 e 2):</span> Può visualizzare il catalogo degli eventi (tramite slider nella home o tramite pagina di ricerca globale o per luogo/data), aggiungere biglietti al carrello e procedere all'acquisto.</li>
+        <li><span class="strong">Organizzatore (Livello 3):</span> Possiede una propria dashboard dalla quale può inserire nuovi eventi, modificare quelli esistenti (inclusi locandina, programma, data e prezzi), gestire la disponibilità dei biglietti e impostare politiche di sconto last-minute automatiche.</li>
+        <li><span class="strong">Amministratore (Livello 4):</span> Ha il controllo globale sulla piattaforma tramite la sua dashboard riservata. Può creare e gestire gli account degli organizzatori, visualizzare statistiche di vendita aggregate o per singolo organizzatore, e gestire gli account dei clienti.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>4. Organization Chart (Mappa del sito)</h2>
+    <ul>
+        <li><strong>Home Page</strong>
+            <ul>
+                <li>Vetrina eventi in evidenza e caroselli orizzontali suddivisi per categorie</li>
+                <li>Form di ricerca eventi interattiva</li>
+                <li>Modali di Login e Registrazione in overlay</li>
+            </ul>
+        </li>
+        <li><strong>Ricerca ed Eventi</strong>
+            <ul>
+                <li>Pagina Singolo Evento: Dettagli completi, mappa/luogo, programma, acquisto biglietto</li>
+                <li>Risultati Ricerca: Griglia con eventi filtrati per termine descrittivo, città e date</li>
+                <li>Categorie Generiche: Elenco completo degli eventi filtrato per la specifica categoria scelta</li>
+            </ul>
+        </li>
+        <li><strong>Area Cliente</strong>
+            <ul>
+                <li>Carrello (aggiunta e rimozione biglietti in sessione)</li>
+                <li>Checkout simulato e Conferma Ordine</li>
+                <li>Profilo Utente personale</li>
+            </ul>
+        </li>
+        <li><strong>Area Organizzatore (Riservata L3)</strong>
+            <ul>
+                <li>Dashboard Statistiche / Analisi Vendite per singolo evento</li>
+                <li>Sezione Gestione Eventi (Creazione, Modifica locandine e info, Eliminazione)</li>
+                <li>Sezione Gestione Sconti e Disponibilità Biglietti</li>
+            </ul>
+        </li>
+        <li><strong>Area Amministratore (Riservata L4)</strong>
+            <ul>
+                <li>Dashboard Amministratore con Analisi Vendite Aggregate per organizzazione</li>
+                <li>Sezione Gestione Organizzatori (Creazione, Modifica password, Eliminazione a cascata)</li>
+                <li>Sezione Gestione Clienti</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>5. Soluzioni Adottate (Per il Docente)</h2>
+    <p>Nel corso dello sviluppo sono state adottate svariate soluzioni tecnologicamente rilevanti per soddisfare i requisiti, garantire robustezza del codice e favorire l'espandibilità:</p>
+    <ul>
+        <li><span class="strong">Architettura DRY (Don't Repeat Yourself) sulle Categorie:</span> Abbiamo ottimizzato drasticamente il codice refactorizzando le 5 viste delle categorie eliminando la ridondanza: tutto il traffico è convogliato su un'unica rotta dinamica parametrizzata (/eventi/{slug}) che adatta i contenuti grafici e le query al database in automatico.</li>
+        <li><span class="strong">Interazioni AJAX Avanzate con jQuery:</span> Implementazione di un sistema di autocompletamento in tempo reale per la ricerca della città. La barra interroga le API interne in modo asincrono, senza ricaricare la pagina, migliorando drasticamente la User Experience generale.</li>
+        <li><span class="strong">Generazione Dinamica degli URL per compatibilità:</span> Tutte le action dei form fittizi via JavaScript (necessari per supportare le chiamate RESTful <code>PUT</code> e <code>DELETE</code>) sono generate usando l'helper nativo di Laravel <code>url()</code>. Questo assicura che il portale funzioni perfettamente anche quando ospitato in sotto-directory di server Apache remoti.</li>
+        <li><span class="strong">Protezione delle Aree Riservate con Middleware Custom:</span> Restrizione ferrea dell'accesso alle rispettive dashboard tramite Middleware specifici (<code>CheckOrganizer</code>, <code>CheckAdmin</code>) che si integrano armoniosamente col sistema di autenticazione Laravel Breeze, bloccando alla radice tentativi di accesso non autorizzati.</li>
+        <li><span class="strong">Database Seeding Avanzato e Automazione:</span> Configurazione di Seeder avanzati combinati all'uso di <em>Faker</em> per popolare rapidamente il database con decine di eventi completi, migliaia di biglietti e account di test multi-livello (amministratori, staff, clienti), permettendo di testare istantaneamente le funzionalità di aggregazione dati e i grafici di vendita.</li>
+    </ul>
+</div>
+</body>
+</html>
