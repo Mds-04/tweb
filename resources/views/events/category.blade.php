@@ -54,17 +54,6 @@
     @include('partials.login')
     @include('partials.register')
 
-    <div id="modal-calendario" class="modal-overlay">
-        <div class="modal-content" style="max-width: 350px;">
-            <span class="chiudi-modal" id="btn-chiudi-calendario">&times;</span>
-            <h2>Seleziona una Data</h2>
-            <div class="form-group">
-                <input type="date" id="data-scelta"
-                    style="width: 100%; padding: 15px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit; margin-bottom: 20px;">
-            </div>
-            <button class="btn-submit" id="conferma-data">Conferma Data</button>
-        </div>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>

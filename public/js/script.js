@@ -170,8 +170,9 @@ $(document).ready(function() {
 
         function fetchAndShowLocations(val) {
             $autocompleteList.empty();
+            var baseUrl = window.appBaseUrl || '';
             $.ajax({
-                url: '/api/locations',
+                url: baseUrl + '/api/locations',
                 method: 'GET',
                 data: { q: val },
                 dataType: 'json',
@@ -223,30 +224,6 @@ $(document).ready(function() {
             }
         });
     }
-
-
-
-    // --- GESTIONE MODAL CALENDARIO ---
-    $('#apri-calendario').on('click', function() {
-        $('#dd-quando').removeClass('active');
-        $('#modal-calendario').addClass('active');
-    });
-
-    $('#btn-chiudi-calendario, #modal-calendario').on('click', function(e) {
-        if (e.target === this) {
-            $('#modal-calendario').removeClass('active');
-        }
-    });
-
-    $('#conferma-data').on('click', function() {
-        const dateVal = $('#data-scelta').val();
-        if (dateVal) {
-            const dateObj = new Date(dateVal);
-            const formattedDate = dateObj.toLocaleDateString('it-IT');
-            $('#dd-quando .dd-selected').text(formattedDate);
-            $('#modal-calendario').removeClass('active');
-        }
-    });
 
     // --- 7. GESTIONE MODAL LOGOUT ---
     $('#btn-apri-logout').on('click', function(e) {

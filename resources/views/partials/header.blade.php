@@ -1,3 +1,4 @@
+<script>window.appBaseUrl = "{{ url('/') }}";</script>
 <header class="top-navbar">
     <div class="logo-container">
         <img src="{{ asset('img/noBgLogo.png') }}" alt="Logo" class="logo">
