@@ -117,7 +117,7 @@ class CartController extends Controller
         try {
             DB::transaction(function () use ($cart, $request, $codice_ordine, &$purchases) {
                 foreach ($cart as $id => $details) {
-                    // Lock for update per prevenire race conditions
+                    // Blocco la singola riga del database per evitare che più persone comprino contemporaneamente l'ultimo biglietto disponibile
                     $evento = Event::lockForUpdate()->findOrFail($id);
 
                     if ($evento->biglietti_disponibili < $details['quantity']) {

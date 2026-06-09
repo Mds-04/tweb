@@ -477,7 +477,7 @@ footer {
     transform: translateY(-3px);
 }
 
-/* Responsive base */
+/* Adattamento base per i cellulari */
 @media (max-width: 768px) {
     .top-navbar .search-bar { display: none; } /* Nascondi su mobile per semplicità come spesso accade */
     .carousel-btn { display: none; } /* Su mobile si fa swipe col dito */
@@ -711,8 +711,6 @@ footer {
     font-size: 14px;
 }
 
-/* rimossi vecchi stili a griglia per eventi musicali */
-
 /* --- CUSTOM DROPDOWNS (Stile TicketSms) --- */
 .custom-dropdown {
     position: relative;
@@ -823,7 +821,7 @@ footer {
     border-color: var(--primary-color);
 }
 
-/* Autocomplete list */
+/* Lista dei suggerimenti per la ricerca */
 .autocomplete-items {
     position: absolute;
     z-index: 99;
@@ -871,8 +869,6 @@ footer {
     .combo-box-container {
         grid-template-columns: 1fr !important; 
     }
-
-    /* rimosse grid query */
 }
 
 /* ================= AREA PERSONALE (DASHBOARD) ================= */
@@ -1045,7 +1041,7 @@ footer {
     margin-top: 20px !important;
 }
 
-/* Responsive Dashboard */
+/* Adattamento Dashboard per i cellulari */
 @media (max-width: 850px) {
     .dashboard-wrapper { flex-direction: column; }
     .sidebar { width: 100%; position: static;}

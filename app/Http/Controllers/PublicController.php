@@ -81,7 +81,7 @@ class PublicController extends Controller
                 if (str_ends_with($q, '*')) {
                     $cleanTerm = rtrim($q, '*');
                     
-                    // Match if description starts with term OR contains a space followed by term
+                    // Trova l'evento se la descrizione inizia con la parola cercata oppure se la parola si trova all'interno del testo (preceduta da uno spazio)
                     return $query->where(function ($r) use ($cleanTerm) {
                         $r->where('descrizione', 'LIKE', $cleanTerm . '%')
                           ->orWhere('descrizione', 'LIKE', '% ' . $cleanTerm . '%');
@@ -113,7 +113,7 @@ class PublicController extends Controller
             $query->where('citta', 'like', '%' . $term . '%');
         }
         
-        // Fetch distinct cities that are not null or empty
+        // Prende tutte le singole città eliminando i doppioni ed evitando quelle vuote o nulle
         $citta = $query->select('citta')
                        ->whereNotNull('citta')
                        ->where('citta', '!=', '')

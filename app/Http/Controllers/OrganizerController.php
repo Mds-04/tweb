@@ -135,9 +135,9 @@ class OrganizerController extends Controller
             'titolo' => 'required|string|max:255',
             'descrizione' => 'required|string',
             'programma' => 'required|string',
-            'data' => 'required|date',
-            'orario' => 'required|date_format:H:i', // Format could be H:i:s depending on input
-            'citta' => 'required|string|max:255',
+            'data' => 'required|date|after_or_equal:today',
+            'orario' => 'required|date_format:H:i', // Il formato dell'orario potrebbe essere H:i:s a seconda di cosa inserisce l'utente
+            'citta' => 'required|string|max:100',
             'luogo' => 'required|string|max:255',
             'come_raggiungere' => 'nullable|string',
             'categoria' => 'required|string|max:255',
